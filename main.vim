@@ -101,7 +101,7 @@ function! DeleteBufferOrCloseWindow() abort
     endif
 endfunction
 nnoremap <leader>q :call DeleteBufferOrCloseWindow()<cr>
-nnoremap <leader>s :e ~/.vimrc<cr>
+nnoremap <leader>s :e ~/Projects/dotvim/main.vim<cr>
 if isdirectory('.git') || isdirectory('../.git') || isdirectory('../../.git')
     set grepprg=git\ grep\ -n\ $*
 else
@@ -413,7 +413,6 @@ augroup END
 augroup filetype_vim
     autocmd!
     autocmd FileType vim setlocal fdm=marker
-    autocmd BufWritePost vimrc,.vimrc so <afile>
     autocmd FileType vim nnoremap <buffer> <localleader>r :so %<cr>
     command! -nargs=1 Vimdoc help <args>
     autocmd FileType vim setlocal keywordprg=:Vimdoc
