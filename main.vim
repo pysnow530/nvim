@@ -159,7 +159,7 @@ let g:deoplete#enable_at_startup = 1
 Plug 'udalov/kotlin-vim'
 " Plug 'pysnow530/rfc.vim'
 Plug 'vim-scripts/argtextobj.vim'
-" Plug 'ctrlpvim/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 " Plug 'pysnow530/nginx.vim'
 " Plug 'fatih/vim-go'
 Plug 'justinmk/vim-sneak'
@@ -194,6 +194,10 @@ Plug 'dart-lang/dart-vim-plugin'
 
 " Plug 'ryanoasis/vim-devicons'
 " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+
+Plug 'masukomi/vim-markdown-folding'
+
+" Plug 'liuchengxu/space-vim-theme'
 
 call plug#end()
 
@@ -242,7 +246,7 @@ nnoremap <leader>t :TagbarToggle<cr>
 " vim-colors-solarized
 set background=dark
 colorscheme solarized
-highlight VertSplit ctermbg=NONE guibg=NONE
+" highlight VertSplit ctermbg=NONE guibg=NONE
 
 " vim-fugitive
 nnoremap <leader>v :Gstatus<cr>
@@ -400,7 +404,7 @@ augroup filetype_python
     autocmd FileType python nnoremap <buffer> <localleader>r :!python3 %<cr>
     autocmd FileType python vnoremap <buffer> <localleader>r :!w python3<cr>
     autocmd FileType python nnoremap <buffer> <localleader>i :!python3<cr>
-    autocmd FileType python nnoremap <buffer> <localleader>c :!flake8#Flake8()<cr>
+    autocmd FileType python nnoremap <buffer> <localleader>c :call flake8#Flake8()<cr>
 augroup END
 
 augroup filetype_ruby
@@ -526,6 +530,17 @@ augroup filetype_restclient
     autocmd!
     " autocmd BufNewFile,BufReadPost *.http set filetype=restclient
     autocmd FileType vial-http nnoremap <buffer> <cr> :VialHttp<cr>
+augroup END
+
+augroup filetype_http
+    autocmd!
+    autocmd BufNewFile,BufReadPost *.http set filetype=http
+    autocmd FileType http syntax keyword Keyword GET POST DELETE PUT
+    autocmd FileType http syntax match Comment /#.*/
+    autocmd FileType http syntax match String +http://.*+
+    autocmd FileType http syntax match Identifier /^[A-Za-z-]\+:/
+    autocmd FileType http syntax region String start=/"/ end=/"/
+    autocmd FileType http nnoremap <buffer> <localleader>r :HTTPClientDoRequest<cr>
 augroup END
 
 augroup filetype_org
