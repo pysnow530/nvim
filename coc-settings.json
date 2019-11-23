@@ -1,0 +1,4 @@
+{
+    "python.linting.pylamaArgs": ["--rcfile=.pylintrc"],
+    "python.linting.pylintUseMinimalCheckers": false
+}

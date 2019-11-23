@@ -82,6 +82,7 @@ set autoindent
 set sessionoptions+=unix,slash
 " set lazyredraw
 set undofile
+set noswapfile
 
 set mouse=a
 
@@ -141,20 +142,20 @@ Plug 'ap/vim-css-color'
 " Plug 'kchmck/vim-coffee-script'
 Plug 'tpope/vim-fugitive'
 Plug 'godlygeek/tabular'
-Plug 'nvie/vim-flake8'
+" Plug 'nvie/vim-flake8'
 Plug 'cohama/lexima.vim'
 " Plug 'bling/vim-bufferline'
 " Plug 'Shougo/neocomplete.vim'
 
 " Plug 'Shougo/deoplete.nvim'
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
-let g:deoplete#enable_at_startup = 1
+" if has('nvim')
+"   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" else
+"   Plug 'Shougo/deoplete.nvim'
+"   Plug 'roxma/nvim-yarp'
+"   Plug 'roxma/vim-hug-neovim-rpc'
+" endif
+" let g:deoplete#enable_at_startup = 1
 
 Plug 'udalov/kotlin-vim'
 " Plug 'pysnow530/rfc.vim'
@@ -198,6 +199,23 @@ Plug 'dart-lang/dart-vim-plugin'
 Plug 'masukomi/vim-markdown-folding'
 
 " Plug 'liuchengxu/space-vim-theme'
+
+Plug 'posva/vim-vue'
+
+" Plug 'vim-syntastic/syntastic'
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 0
+" let g:syntastic_check_on_wq = 0
+" let g:syntastic_python_checkers = ['pylint']
+" let g:syntastic_python_pylint_args = "--rcfile=.pylintrc"
+" let g:syntastic_javascript_checkers = ['eslint']
+
+" Plug 'neovim/nvim-lsp'  " 开启有异常 2019-11-23
+
+" Use release branch (Recommend)
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+let g:coc_global_extensions = ['coc-python', 'coc-json']
 
 call plug#end()
 
@@ -308,8 +326,12 @@ let org_agenda_files = ['~/Projects/mynote/todos/life-todo.org', '~/Projects/myn
 " enable folder/directory glyph flag (disabled by default with 0)
 " let g:WebDevIconsUnicodeDecorateFolderNodes = 1
 
+" python-mode/python-mode
+" let g:pymode_python = 'python3'
+
 " enable open and close folder/directory glyph flags (disabled by default with 0)
 " let g:DevIconsEnableFoldersOpenClose = 1
+
 " }}}
 
 " {{{ filetypes
@@ -359,7 +381,6 @@ augroup filetype_javascript
     autocmd FileType javascript nnoremap <buffer> <localleader>r :!node %<cr>
     autocmd FileType javascript vnoremap <buffer> <localleader>r :w !node<cr>
     autocmd FileType javascript nnoremap <buffer> <localleader>i :!node<cr>
-    autocmd FileType javascript nnoremap <buffer> <localleader>c :!eslint --no-eslintrc %<cr>
 augroup END
 
 augroup filetype_dart
@@ -404,7 +425,6 @@ augroup filetype_python
     autocmd FileType python nnoremap <buffer> <localleader>r :!python3 %<cr>
     autocmd FileType python vnoremap <buffer> <localleader>r :!w python3<cr>
     autocmd FileType python nnoremap <buffer> <localleader>i :!python3<cr>
-    autocmd FileType python nnoremap <buffer> <localleader>c :call flake8#Flake8()<cr>
 augroup END
 
 augroup filetype_ruby
@@ -489,7 +509,7 @@ augroup filetype_go
     autocmd FileType go setlocal keywordprg=go\ doc
     autocmd FileType go nnoremap <buffer> <localleader>f :% !gofmt<cr>
     autocmd FileType go nnoremap <buffer> <localleader>b :make<cr>
-    autocmd FileType go nnoremap <buffer> <localleader>r :GoRun %<cr>
+    autocmd FileType go nnoremap <buffer> <localleader>r :!go run %<cr>
 augroup END
 
 augroup filetype_java
