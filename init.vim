@@ -1,20 +1,11 @@
 " {{{ description
-" pysnow530's vimrc file.
+" pysnow530's neovim configuration.
 "
 " Maintainer:   pysnow530 <pysnow530@163.com>
 " Inittime:     Apr 5, 2015
 "
-" vim
-" ln -s this_repo_path ~/.vim && vim +PlugInstall
-"
 " neovim
-" ln -s this_repo_path ~/.config/nvim && nvim +PlugInstall
-"
-" Q: Why not vim8 packages?
-" A: Packages will stuck in some plugins.
-"
-" Q: Why not SPACE for leader?
-" A: Space will delay in edit mode.
+" git clone git@github.com:pysnow530/dotvim.git ~/.config/nvim && nvim +PlugInstall
 "
 let mapleader = ","
 let maplocalleader = '\'
@@ -227,6 +218,8 @@ function! s:show_documentation()
   endif
 endfunction
 
+" Fix autofix problem of current line
+" nmap <leader>qf  <Plug>(coc-fix-current)  " 不稳定 -- 2019-12-22
 " use `:OR` for organize import of current buffer
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
