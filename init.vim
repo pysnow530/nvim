@@ -17,6 +17,7 @@ set history=50
 set showcmd
 set hlsearch
 set incsearch
+nnoremap <esc> :noh<return><esc>
 set guifont=SauceCodeProNerdFontCo-Regular:h11
 set showmatch
 set scrolloff=1
@@ -151,7 +152,8 @@ Plug 'dart-lang/dart-vim-plugin'
 
 Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 
-let g:semshi#excluded_hl_groups = ['local', 'global', 'imported', 'builtin', 'attribute', 'free']
+let g:semshi#excluded_hl_groups = ['local', 'global', 'imported', 'builtin', 'attribute', 'free', 'self']
+let g:semshi#error_sign = v:false
 
 function! MyCustomHighlights()
     hi! link semshiParameterUnused  pythonComment
@@ -227,6 +229,22 @@ endfunction
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
 Plug 'fatih/vim-go'
+
+Plug 'kizza/actionmenu.nvim'
+
+func! OpenContext()
+  call actionmenu#open(['Rename'], 'HandleContextClicked')
+endfunc
+
+func! HandleContextClicked(index, item)
+    if a:index < 0
+        return
+    endif
+
+    if a:item == 'Rename'
+        exec 'Semshi rename'
+    endif
+endfunc
 
 call plug#end()
 
@@ -438,6 +456,7 @@ augroup filetype_python
     autocmd FileType python nnoremap <buffer> <localleader>r :!python3 %<cr>
     autocmd FileType python vnoremap <buffer> <localleader>r :!w python3<cr>
     autocmd FileType python nnoremap <buffer> <localleader>i :!python3<cr>
+    autocmd FileType python nnoremap <buffer> <return> :call OpenContext()<cr>
 augroup END
 
 augroup filetype_ruby
