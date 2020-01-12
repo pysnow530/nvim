@@ -11,33 +11,24 @@ let mapleader = ","
 let maplocalleader = '\'
 " }}}
 
-" {{{ view
+" {{{ ui
 syntax on
 set history=50
 set showcmd
 set hlsearch
 set incsearch
-set guifont=SauceCodeProNerdFontCompleteM-Regular:h14
+set guifont=SauceCodeProNerdFontCo-Regular:h11
 set showmatch
 set scrolloff=1
 set nowrap
 set foldtext=getline(v:foldstart)
+set foldlevel=99  " don't fold on opened
 
-set cursorline
+" set cursorline
 if exists('+colorcolumn') | set colorcolumn=79 | endif
 set nu
 if exists('+rnu') | set rnu | endif
 
-fun! StatusLineWrapper() abort
-    if exists('*bufferline#refresh_status')
-        return '%{bufferline#refresh_status()}' .
-                    \ bufferline#get_status_string() . '%=%y %=%P '
-    else
-        return '%f %=%y %=%P '
-    endif
-endf
-
-set statusline=%!StatusLineWrapper()
 set laststatus=2
 
 fun! ToggleAllFolds() abort
@@ -55,14 +46,14 @@ fun! ToggleAllFolds() abort
         exe 'normal zM'
     endif
 endf
-nnoremap <TAB> za
 nnoremap <S-TAB> :call ToggleAllFolds()<cr>
+nnoremap <SPACE> za  " remap <TAB> will cause <CTRL-i> remapped
 " }}}
 
 " {{{ edit
-set fileencodings=utf-8,ucs-bom,cp936,gb18030,big5,euc-jp,euc-kr,latin1
+set fileencodings=UTF-8
 try
-    set encoding=utf-8
+    set encoding=UTF-8
 catch //
 endtry
 set tabstop=8
@@ -77,25 +68,22 @@ set noswapfile
 
 set mouse=a
 
-set wildignore+=*.class,*.pyc
-
 inoremap jk <ESC>
 inoremap <c-u> <esc>vbUea
 nnoremap <leader>b :b#<cr>
-nnoremap <leader>s :e ~/Projects/dotvim/main.vim<cr>
 if isdirectory('.git') || isdirectory('../.git') || isdirectory('../../.git')
     set grepprg=git\ grep\ -n\ $*
 else
     set grepprg=grep\ -n\ $*\ -r\ .\ --exclude\ '.*.swp'
 endif
 command! -nargs=+ NewGrep execute 'silent grep! <args>' | redraw! | copen 10
-nnoremap <leader>g :NewGrep <cword>
+nnoremap <leader>g :NewGrep <c-r><c-w>
 nnoremap <c-h> <c-w>h
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 nnoremap <c-l> <c-w>l
-nnoremap <leader>k :q<cr>
 nnoremap <leader><leader> q:
+nnoremap <leader>k :q<cr>
 nnoremap <leader>j :w<cr>
 
 nnoremap <leader>w :set invwrap<cr>
@@ -108,6 +96,7 @@ call plug#begin()
 " Plug 'VundleVim/Vundle.vim'
 Plug 'msanders/snipmate.vim'
 Plug 'hynek/vim-python-pep8-indent'  " neovim默认的indent也是有问题的
+Plug 'vim-scripts/pylint.vim'
 Plug 'mattn/emmet-vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdtree'
@@ -138,7 +127,6 @@ Plug 'cohama/lexima.vim'
 " let g:deoplete#enable_at_startup = 1
 
 Plug 'udalov/kotlin-vim'
-" Plug 'pysnow530/rfc.vim'
 Plug 'vim-scripts/argtextobj.vim'
 Plug 'ctrlpvim/ctrlp.vim'
 " Plug 'pysnow530/nginx.vim'
@@ -146,7 +134,7 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'justinmk/vim-sneak'
 Plug 'rhysd/clever-f.vim'
 " Plug 'Valloric/YouCompleteMe'
-" Plug 'wakatime/vim-wakatime'
+Plug 'wakatime/vim-wakatime'
 " Plug 'ledger/vim-ledger'
 " Plug 'bounceme/restclient.vim'
 " Plug 'jceb/vim-orgmode'
@@ -160,7 +148,21 @@ Plug 'aquach/vim-http-client'
 Plug 'posva/vim-vue'
 " Plug 'morhetz/gruvbox'
 Plug 'dart-lang/dart-vim-plugin'
-" Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
+
+Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
+
+let g:semshi#excluded_hl_groups = ['local', 'global', 'imported', 'builtin', 'attribute', 'free']
+
+function! MyCustomHighlights()
+    hi! link semshiParameterUnused  pythonComment
+    hi! link semshiUnresolved       Error
+    hi! link semshiSelected         Visual
+endfunction
+augroup semshi_custom
+    autocmd!
+    autocmd FileType python call MyCustomHighlights()
+augroup END
+
 " Plug 'davidhalter/jedi-vim'
 " Plug 'philip-karlsson/bolt.nvim', { 'do': ':UpdateRemotePlugins' }
 " Plug 'airodactyl/neovim-ranger'
@@ -173,7 +175,7 @@ Plug 'dart-lang/dart-vim-plugin'
 " Plug 'vim-airline/vim-airline'
 " Plug 'vim-airline/vim-airline-themes'
 
-" Plug 'ryanoasis/vim-devicons'
+Plug 'ryanoasis/vim-devicons'
 " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
 Plug 'masukomi/vim-markdown-folding'
@@ -196,8 +198,9 @@ Plug 'posva/vim-vue'
 " Use release branch (Recommend)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 let g:coc_global_extensions = [
-            \ 'coc-python', 'coc-json', 'coc-go', 'coc-tsserver', 'coc-phpls',
+            \ 'coc-python', 'coc-json', 'coc-tsserver', 'coc-phpls',
             \ 'coc-vetur']
+" NOTE: coc-go replaced by vim-go
 
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -222,6 +225,8 @@ endfunction
 " nmap <leader>qf  <Plug>(coc-fix-current)  " 不稳定 -- 2019-12-22
 " use `:OR` for organize import of current buffer
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+Plug 'fatih/vim-go'
 
 call plug#end()
 
@@ -428,6 +433,8 @@ endfunction
 augroup filetype_python
     autocmd!
     autocmd FileType python setlocal fdm=indent
+    autocmd FileType python setlocal makeprg=pylint\ --reports=n\ --output-format=parseable\ %:p
+    autocmd FileType python setlocal errorformat=%f:%l:\ %m
     autocmd FileType python nnoremap <buffer> <localleader>r :!python3 %<cr>
     autocmd FileType python vnoremap <buffer> <localleader>r :!w python3<cr>
     autocmd FileType python nnoremap <buffer> <localleader>i :!python3<cr>
@@ -569,12 +576,13 @@ augroup filetype_http
     autocmd FileType http nnoremap <buffer> <localleader>r :HTTPClientDoRequest<cr>
 augroup END
 
-augroup filetype_org
+augroup filetype_yaml
     autocmd!
-    autocmd FileType org nnoremap <buffer> <localleader>t :OrgAgendaWeek<cr>
+    autocmd FileType yaml setlocal tabstop=2
+    autocmd FileType yaml setlocal softtabstop=2
+    autocmd FileType yaml setlocal shiftwidth=2
+    autocmd FileType yaml nnoremap <buffer> <localleader>r :!kubectl apply -n=jianming -f=%<cr>
 augroup END
-
-let g:rfc_folding = 1
 
 function! s:GuessPipeFiletype()
     " json
@@ -624,16 +632,5 @@ augroup filetype_init
     autocmd!
     autocmd VimEnter * call s:SetPipeFiletype()
     autocmd VimEnter * call s:FindFile()
-augroup END
-" }}}
-
-" {{{ PAAS commands
-command! PAASUpgrade !ssh mnet command 'xssh sz-ops sh /home/web/xy-runner-api/bin/upgrade.sh; xssh 10.0.128.34 sh /home/web/xy-runner-api/bin/upgrade.sh'
-augroup filetype_yaml
-    autocmd!
-    autocmd FileType yaml setlocal tabstop=2
-    autocmd FileType yaml setlocal softtabstop=2
-    autocmd FileType yaml setlocal shiftwidth=2
-    autocmd FileType yaml nnoremap <buffer> <localleader>r :!kubectl apply -n=jianming -f=%<cr>
 augroup END
 " }}}
