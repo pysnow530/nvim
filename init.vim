@@ -108,6 +108,7 @@ Plug 'tomtom/tcomment_vim'
 " Plug 'christoomey/vim-sort-motion'
 Plug 'tpope/vim-surround'
 Plug 'altercation/vim-colors-solarized'
+Plug 'iCyMind/NeoSolarized'
 Plug 'ap/vim-css-color'
 " Plug 'kchmck/vim-coffee-script'
 Plug 'tpope/vim-fugitive'
@@ -291,8 +292,10 @@ let g:tagbar_autofocus = 1
 nnoremap <leader>t :TagbarToggle<cr>
 
 " vim-colors-solarized
+set termguicolors
 set background=dark
-colorscheme solarized
+" colorscheme solarized
+colorscheme NeoSolarized
 " highlight VertSplit ctermbg=NONE guibg=NONE
 
 " vim-fugitive
