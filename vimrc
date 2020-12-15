@@ -17,7 +17,6 @@ set history=50
 set showcmd
 set hlsearch
 set incsearch
-nnoremap <esc> :noh<return><esc>
 set guifont=SauceCodeProNerdFontCo-Regular:h11
 set showmatch
 set scrolloff=1
@@ -96,7 +95,7 @@ filetype off
 call plug#begin()
 " Plug 'VundleVim/Vundle.vim'
 Plug 'msanders/snipmate.vim'
-Plug 'hynek/vim-python-pep8-indent'  " neovim默认的indent也是有问题的
+Plug 'hynek/vim-python-pep8-indent'  " neovim also has indent problem
 Plug 'vim-scripts/pylint.vim'
 Plug 'mattn/emmet-vim'
 Plug 'airblade/vim-gitgutter'
@@ -108,7 +107,7 @@ Plug 'tomtom/tcomment_vim'
 " Plug 'christoomey/vim-sort-motion'
 Plug 'tpope/vim-surround'
 Plug 'altercation/vim-colors-solarized'
-Plug 'iCyMind/NeoSolarized'
+" Plug 'iCyMind/NeoSolarized'
 Plug 'ap/vim-css-color'
 " Plug 'kchmck/vim-coffee-script'
 Plug 'tpope/vim-fugitive'
@@ -128,7 +127,7 @@ Plug 'cohama/lexima.vim'
 " endif
 " let g:deoplete#enable_at_startup = 1
 
-Plug 'udalov/kotlin-vim'
+" Plug 'udalov/kotlin-vim'
 Plug 'vim-scripts/argtextobj.vim'
 Plug 'ctrlpvim/ctrlp.vim'
 " Plug 'pysnow530/nginx.vim'
@@ -136,7 +135,7 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'justinmk/vim-sneak'
 Plug 'rhysd/clever-f.vim'
 " Plug 'Valloric/YouCompleteMe'
-Plug 'wakatime/vim-wakatime'
+" Plug 'wakatime/vim-wakatime'
 " Plug 'ledger/vim-ledger'
 " Plug 'bounceme/restclient.vim'
 " Plug 'jceb/vim-orgmode'
@@ -151,7 +150,7 @@ Plug 'posva/vim-vue'
 " Plug 'morhetz/gruvbox'
 Plug 'dart-lang/dart-vim-plugin'
 
-Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
+" Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 
 let g:semshi#excluded_hl_groups = ['local', 'global', 'imported', 'builtin', 'attribute', 'free', 'self']
 let g:semshi#error_sign = v:false
@@ -171,7 +170,7 @@ augroup END
 " Plug 'airodactyl/neovim-ranger'
 
 " Plug 'xolox/vim-misc'
-" Plug 'xolox/vim-easytags'  " 太慢了，卡死编辑器
+" Plug 'xolox/vim-easytags'  " too slow
 
 " Plug 'jsfaint/gen_tags.vim'
 
@@ -199,7 +198,7 @@ Plug 'posva/vim-vue'
 " Plug 'neovim/nvim-lsp'  " 开启有异常 2019-11-23
 
 " Use release branch (Recommend)
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 let g:coc_global_extensions = [
             \ 'coc-python', 'coc-json', 'coc-tsserver', 'coc-phpls',
             \ 'coc-vetur']
@@ -225,11 +224,9 @@ function! s:show_documentation()
 endfunction
 
 " Fix autofix problem of current line
-" nmap <leader>qf  <Plug>(coc-fix-current)  " 不稳定 -- 2019-12-22
+" nmap <leader>qf  <Plug>(coc-fix-current)  " has bug -- 2019-12-22
 " use `:OR` for organize import of current buffer
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
-Plug 'fatih/vim-go'
 
 Plug 'kizza/actionmenu.nvim'
 
@@ -295,7 +292,7 @@ nnoremap <leader>t :TagbarToggle<cr>
 set termguicolors
 set background=dark
 " colorscheme solarized
-colorscheme NeoSolarized
+" colorscheme NeoSolarized
 " highlight VertSplit ctermbg=NONE guibg=NONE
 
 " vim-fugitive
@@ -604,6 +601,12 @@ augroup filetype_yaml
     autocmd FileType yaml setlocal softtabstop=2
     autocmd FileType yaml setlocal shiftwidth=2
     autocmd FileType yaml nnoremap <buffer> <localleader>r :!kubectl apply -n=jianming -f=%<cr>
+augroup END
+
+augroup filetype_lisp
+    autocmd!
+    autocmd FileType lisp nnoremap <buffer> <localleader>r :!sbcl --script %<cr>
+    autocmd FileType lisp nnoremap <buffer> <localleader>i :!sbcl<cr>
 augroup END
 
 function! s:GuessPipeFiletype()
