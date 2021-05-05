@@ -86,6 +86,7 @@ nnoremap <leader><leader> q:
 nnoremap <leader>k :q<cr>
 nnoremap <leader>j :w<cr>
 
+nnoremap <leader>s :e ~/.vim/vimrc<cr>
 nnoremap <leader>w :set invwrap<cr>
 " }}}
 
@@ -103,7 +104,6 @@ Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
 Plug 'lvht/tagbar-markdown'
 Plug 'pysnow530/snipmate-snippets'
-Plug 'tomtom/tcomment_vim'
 " Plug 'christoomey/vim-sort-motion'
 Plug 'tpope/vim-surround'
 Plug 'altercation/vim-colors-solarized'
@@ -361,6 +361,62 @@ let org_agenda_files = ['~/Projects/mynote/todos/life-todo.org', '~/Projects/myn
 " enable open and close folder/directory glyph flags (disabled by default with 0)
 " let g:DevIconsEnableFoldersOpenClose = 1
 
+let g:toggle_comment_map = #{python: '#', vim: '"', golang: '//', haskell: '--'}
+
+fun! CountPrefixSpace(str) abort
+    if len(a:str) == 0
+        return 0
+    elseif a:str[0] == ' '
+        return 1 + CountPrefixSpace(a:str[1:])
+    else
+        return 0
+    endif
+endf
+
+fun! ToggleComment(type='', ...) abort
+    if a:type == ''
+        set opfunc=ToggleComment
+        return 'g@'
+    endif
+
+    let start_line = line("'[")
+    let end_line = line("']")
+
+    if has_key(g:toggle_comment_map, &ft)
+        let prefix = g:toggle_comment_map[&ft]
+    else
+        echoerr 'Unsupported filetype: "'.&ft.'"!'
+        return
+    endif
+
+    " if it was commented
+    let commented = 1
+    let spaces = 666
+    for l in range(start_line, end_line)
+        let line = getline(l)
+        if line !~ '^\s*'.prefix.' '
+            let commented = 0
+        endif
+        let tmp_prefix = CountPrefixSpace(line)
+        if tmp_prefix < spaces
+            let spaces = tmp_prefix
+        endif
+    endfor
+
+    " toggle comment
+    for l in range(start_line, end_line)
+        if commented == 1
+            exec l.'s/^\(\s*\)'.prefix.' /\1/'
+        else
+            exec l.'s/^\(\s\{'.spaces.'\}\)/\1'.prefix.' /'
+        endif
+    endfor
+endf
+
+nnoremap <expr> gc ToggleComment()
+xnoremap <expr> gc ToggleComment()
+nnoremap <expr> gcc ToggleComment() .. '_'
+
 " }}}
 
 " {{{ filetypes
@@ -607,6 +663,12 @@ augroup filetype_lisp
     autocmd!
     autocmd FileType lisp nnoremap <buffer> <localleader>r :!sbcl --script %<cr>
     autocmd FileType lisp nnoremap <buffer> <localleader>i :!sbcl<cr>
+augroup END
+
+augroup filetype_haskell
+    autocmd!
+    autocmd FileType haskell nnoremap <buffer> <localleader>r :!stack runhaskell %<cr>
+    autocmd FileType haskell nnoremap <buffer> <localleader>i :!stack ghci<cr>
 augroup END
 
 function! s:GuessPipeFiletype()
