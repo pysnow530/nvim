@@ -150,21 +150,6 @@ Plug 'posva/vim-vue'
 " Plug 'morhetz/gruvbox'
 Plug 'dart-lang/dart-vim-plugin'
 
-" Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
-
-let g:semshi#excluded_hl_groups = ['local', 'global', 'imported', 'builtin', 'attribute', 'free', 'self']
-let g:semshi#error_sign = v:false
-
-function! MyCustomHighlights()
-    hi! link semshiParameterUnused  pythonComment
-    hi! link semshiUnresolved       Error
-    hi! link semshiSelected         Visual
-endfunction
-augroup semshi_custom
-    autocmd!
-    autocmd FileType python call MyCustomHighlights()
-augroup END
-
 " Plug 'davidhalter/jedi-vim'
 " Plug 'philip-karlsson/bolt.nvim', { 'do': ':UpdateRemotePlugins' }
 " Plug 'airodactyl/neovim-ranger'
@@ -290,7 +275,7 @@ nnoremap <leader>t :TagbarToggle<cr>
 
 " vim-colors-solarized
 set termguicolors
-set background=light
+set background=dark
 " colorscheme solarized
 " colorscheme NeoSolarized
 " highlight VertSplit ctermbg=NONE guibg=NONE
