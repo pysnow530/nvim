@@ -1,2 +1,4 @@
 .*.un~
 .netrwhist
+
+__pycache__

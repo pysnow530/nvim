@@ -290,7 +290,7 @@ nnoremap <leader>t :TagbarToggle<cr>
 
 " vim-colors-solarized
 set termguicolors
-set background=dark
+set background=light
 " colorscheme solarized
 " colorscheme NeoSolarized
 " highlight VertSplit ctermbg=NONE guibg=NONE
@@ -361,62 +361,34 @@ let org_agenda_files = ['~/Projects/mynote/todos/life-todo.org', '~/Projects/myn
 " enable open and close folder/directory glyph flags (disabled by default with 0)
 " let g:DevIconsEnableFoldersOpenClose = 1
 
-let g:toggle_comment_map = #{python: '#', vim: '"', golang: '//', haskell: '--'}
+py3 << EOF
+import os
+from importlib import reload
 
-fun! CountPrefixSpace(str) abort
-    if len(a:str) == 0
-        return 0
-    elseif a:str[0] == ' '
-        return 1 + CountPrefixSpace(a:str[1:])
-    else
-        return 0
-    endif
-endf
+if os.path.dirname(os.getenv('MYVIMRC')) in sys.path:
+    sys.path.remove(os.path.dirname(os.getenv('MYVIMRC')))
+sys.path.insert(0, os.path.dirname(os.getenv('MYVIMRC')))
+EOF
 
-fun! ToggleComment(type='', ...) abort
+" }}}
+
+" {{{ plugins.commenter
+py3 import plugins.commenter; reload(plugins.commenter)
+
+py3 plugins.commenter.COMMENTER_CONFIG = {'python': '#', 'vim': '"'}
+
+fun! ToggleBlockComment(type) abort
     if a:type == ''
-        set opfunc=ToggleComment
+        set opfunc=ToggleBlockComment
         return 'g@'
     endif
 
-    let start_line = line("'[")
-    let end_line = line("']")
-
-    if has_key(g:toggle_comment_map, &ft)
-        let prefix = g:toggle_comment_map[&ft]
-    else
-        echoerr 'Unsupported filetype: "'.&ft.'"!'
-        return
-    endif
-
-    " if it was commented
-    let commented = 1
-    let spaces = 666
-    for l in range(start_line, end_line)
-        let line = getline(l)
-        if line !~ '^\s*'.prefix.' '
-            let commented = 0
-        endif
-        let tmp_prefix = CountPrefixSpace(line)
-        if tmp_prefix < spaces
-            let spaces = tmp_prefix
-        endif
-    endfor
-
-    " toggle comment
-    for l in range(start_line, end_line)
-        if commented == 1
-            exec l.'s/^\(\s*\)'.prefix.' /\1/'
-        else
-            exec l.'s/^\(\s\{'.spaces.'\}\)/\1'.prefix.' /'
-        endif
-    endfor
+    py3 plugins.commenter.toggle_block_comment()
 endf
 
-nnoremap <expr> gc ToggleComment()
-xnoremap <expr> gc ToggleComment()
-nnoremap <expr> gcc ToggleComment() .. '_'
-
+nnoremap <expr> gc ToggleBlockComment('')
+xnoremap <expr> gc ToggleBlockComment('')
+nnoremap <expr> gcc ToggleBlockComment('') . '_'
 " }}}
 
 " {{{ filetypes
