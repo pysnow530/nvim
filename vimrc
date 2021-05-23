@@ -382,7 +382,7 @@ fun! Tabular(sep, start, end) abort
     py3 plugins.tabular.tabular()  # a:sep, a:start, a:end
 endf
 
-command -range=% -nargs=1 Tab :call Tabular(<q-args>, <line1>, <line2>)
+command -range -nargs=1 Tab :call Tabular(<q-args>, <line1>, <line2>)
 " }}}
 
 " {{{ filetypes
