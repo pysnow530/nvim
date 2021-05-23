@@ -111,7 +111,6 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'ap/vim-css-color'
 " Plug 'kchmck/vim-coffee-script'
 Plug 'tpope/vim-fugitive'
-Plug 'godlygeek/tabular'
 " Plug 'nvie/vim-flake8'
 Plug 'cohama/lexima.vim'
 " Plug 'bling/vim-bufferline'
@@ -374,6 +373,16 @@ endf
 nnoremap <expr> gc ToggleBlockComment('')
 xnoremap <expr> gc ToggleBlockComment('')
 nnoremap <expr> gcc ToggleBlockComment('') . '_'
+" }}}
+
+" {{{ plugins.tabular
+py3 import plugins.tabular; reload(plugins.tabular)
+
+fun! Tabular(sep, start, end) abort
+    py3 plugins.tabular.tabular()  # a:sep, a:start, a:end
+endf
+
+command -range=% -nargs=1 Tab :call Tabular(<q-args>, <line1>, <line2>)
 " }}}
 
 " {{{ filetypes
