@@ -105,7 +105,7 @@ Plug 'majutsushi/tagbar'
 Plug 'lvht/tagbar-markdown'
 Plug 'pysnow530/snipmate-snippets'
 " Plug 'christoomey/vim-sort-motion'
-Plug 'tpope/vim-surround'
+" Plug 'tpope/vim-surround'
 Plug 'altercation/vim-colors-solarized'
 " Plug 'iCyMind/NeoSolarized'
 Plug 'ap/vim-css-color'
@@ -128,7 +128,7 @@ Plug 'cohama/lexima.vim'
 
 " Plug 'udalov/kotlin-vim'
 Plug 'vim-scripts/argtextobj.vim'
-Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'ctrlpvim/ctrlp.vim'
 " Plug 'pysnow530/nginx.vim'
 " Plug 'fatih/vim-go'
 Plug 'justinmk/vim-sneak'
@@ -293,13 +293,13 @@ endif
 " Shougo/deoplete.nvim
 
 " kien/ctrlp.vim
-let g:ctrlp_use_caching = 1
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](\.git|\.hg|\.svn|node_modules)$',
-  \ 'file': '\v\.(exe|so|dll)$',
-  \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
-  \ }
+" let g:ctrlp_use_caching = 1
+" let g:ctrlp_clear_cache_on_exit = 0
+" let g:ctrlp_custom_ignore = {
+"   \ 'dir':  '\v[\/](\.git|\.hg|\.svn|node_modules)$',
+"   \ 'file': '\v\.(exe|so|dll)$',
+"   \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
+"   \ }
 
 " Valloric/YouCompleteMe
 " let g:ycm_key_list_select_completion = ['<c-n>', '<Down>']
@@ -383,6 +383,38 @@ fun! Tabular(sep, start, end) abort
 endf
 
 command -range -nargs=1 Tab :call Tabular(<q-args>, <line1>, <line2>)
+" }}}
+
+" {{{ plugins.ctrlp
+py3 import plugins.ctrlp; reload(plugins.ctrlp)
+
+nnoremap <c-p> :py3 plugins.ctrlp.ctrlp(True)<cr>
+
+augroup filetype_ctrlp
+    autocmd!
+    " TODO: fix cannot delete old input after switch to normal mode and back
+    autocmd FileType ctrlp inoremap <buffer> <c-j> <c-o>j
+    autocmd FileType ctrlp inoremap <buffer> <c-k> <c-o>k
+    autocmd FileType ctrlp inoremap <buffer> <c-c> <esc>:bdelete!<cr>
+    autocmd FileType ctrlp inoremap <buffer> <cr> <esc>:py3 plugins.ctrlp.edit()<cr>
+    autocmd FileType ctrlp autocmd TextChangedI <buffer=abuf> :py3 plugins.ctrlp.syntax(); plugins.ctrlp.ctrlp(False)
+augroup END
+" }}}
+
+" {{{ plugins.surrounder
+py3 import plugins.surrounder; reload(plugins.surrounder)
+
+fun! Surround(type) abort
+    if a:type == ''
+        set opfunc=Surround
+        return 'g@'
+    endif
+
+    py3 plugins.surrounder.surround()
+endf
+
+nnoremap <expr> ys Surround('')
+nnoremap ds :py3 plugins.surrounder.unsurround()<cr>
 " }}}
 
 " {{{ filetypes
