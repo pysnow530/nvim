@@ -11,6 +11,13 @@ let mapleader = ","
 let maplocalleader = '\'
 " }}}
 
+" {{{ requirements
+if !has('python3')
+    execute '!echo "vim --enable-python3interp was required"'
+    execute 'quit'
+endif
+" }}}
+
 " {{{ ui
 syntax on
 set history=50
@@ -41,9 +48,9 @@ fun! ToggleAllFolds() abort
     echo closed
 
     if closed == 1
-        exe 'normal zR'
+        execute 'normal zR'
     else
-        exe 'normal zM'
+        execute 'normal zM'
     endif
 endf
 nnoremap <S-TAB> :call ToggleAllFolds()<cr>
@@ -224,7 +231,7 @@ func! HandleContextClicked(index, item)
     endif
 
     if a:item == 'Rename'
-        exec 'Semshi rename'
+        execute 'Semshi rename'
     endif
 endfunc
 
@@ -499,7 +506,7 @@ function! RunWithPython(exe_cmd_tmpl)
     endif
 
     let exec_cmd = substitute(a:exe_cmd_tmpl, '{python_path}', python_path, '')
-    exec exec_cmd
+    execute exec_cmd
 endfunction
 
 augroup filetype_python
@@ -700,7 +707,7 @@ fun! s:SetPipeFiletype() abort
         execute 'set filetype=' . l:filetype
 
         if l:filetype == 'json' && line('$') == 1
-            exe "1!python -c 'import json, sys; reload(sys); " .
+            execute "1!python -c 'import json, sys; reload(sys); " .
                         \ "sys.setdefaultencoding(\"utf8\"); " .
                         \ "print json.dumps(json.load(sys.stdin), ensure_ascii=False, indent=4)'"
         endif
