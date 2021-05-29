@@ -38,10 +38,8 @@ def toggle_block_comment():
 
     start, end = curr_buf.mark('[')[0] - 1, curr_buf.mark(']')[0]
     if all(map(commented(comment_str), curr_buf[start:end])):
-        print(type(curr_buf[start:end]))
         curr_buf[start:end] = list(map(uncommenter(comment_str), curr_buf[start:end]))
     else:
-        print(type(curr_buf[start:end]))
         nr_blank = min([re.search(r'\S', line).start() if line else 0 for line in curr_buf[start:end]])
         curr_buf[start:end] = list(map(commenter_generator(comment_str)(nr_blank), curr_buf[start:end]))
 

@@ -39,7 +39,6 @@ def tabular():
     curr_buf = vim.current.buffer
 
     matrix = std_matrix(list(map(split, curr_buf[start:end])), '')
-    print(matrix)
 
     curr_buf[start:end] = list(map(' '.join, fix_width(matrix, vim.strwidth)))
 
