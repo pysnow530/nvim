@@ -11,14 +11,24 @@ let mapleader = ","
 let maplocalleader = '\'
 " }}}
 
-" {{{ requirements
+" {{{ plugins.requirements
 if !has('python3')
     execute '!echo "vim --enable-python3interp was required"'
     execute 'quit'
 endif
+
+py3 << EOF
+import os
+from importlib import reload
+
+if os.path.dirname(os.getenv('MYVIMRC')) in sys.path:
+    sys.path.remove(os.path.dirname(os.getenv('MYVIMRC')))
+sys.path.insert(0, os.path.dirname(os.getenv('MYVIMRC')))
+EOF
+
 " }}}
 
-" {{{ ui
+" {{{ config.ui
 syntax on
 set history=50
 set showcmd
@@ -31,8 +41,12 @@ set nowrap
 set foldtext=getline(v:foldstart)
 set foldlevel=99  " don't fold on opened
 
+set termguicolors
+set background=dark
+colorscheme desert
+
 " set cursorline
-if exists('+colorcolumn') | set colorcolumn=79 | endif
+if exists('+colorcolumn') | set colorcolumn=100 | endif
 set nu
 if exists('+rnu') | set rnu | endif
 
@@ -57,7 +71,7 @@ nnoremap <S-TAB> :call ToggleAllFolds()<cr>
 nnoremap <SPACE> za  " remap <TAB> will cause <CTRL-i> remapped
 " }}}
 
-" {{{ edit
+" {{{ config.edit
 set fileencodings=UTF-8
 try
     set encoding=UTF-8
@@ -97,7 +111,7 @@ nnoremap <leader>s :e ~/.vim/vimrc<cr>
 nnoremap <leader>w :set invwrap<cr>
 " }}}
 
-" {{{ plugins
+" {{{ plugins.global
 filetype off
 
 call plug#begin()
@@ -111,97 +125,19 @@ Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
 Plug 'lvht/tagbar-markdown'
 Plug 'pysnow530/snipmate-snippets'
-" Plug 'christoomey/vim-sort-motion'
-" Plug 'tpope/vim-surround'
-Plug 'altercation/vim-colors-solarized'
-" Plug 'iCyMind/NeoSolarized'
 Plug 'ap/vim-css-color'
-" Plug 'kchmck/vim-coffee-script'
 Plug 'tpope/vim-fugitive'
-" Plug 'nvie/vim-flake8'
 Plug 'cohama/lexima.vim'
-" Plug 'bling/vim-bufferline'
-" Plug 'Shougo/neocomplete.vim'
 
-" Plug 'Shougo/deoplete.nvim'
-" if has('nvim')
-"   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" else
-"   Plug 'Shougo/deoplete.nvim'
-"   Plug 'roxma/nvim-yarp'
-"   Plug 'roxma/vim-hug-neovim-rpc'
-" endif
-" let g:deoplete#enable_at_startup = 1
-
-" Plug 'udalov/kotlin-vim'
 Plug 'vim-scripts/argtextobj.vim'
-" Plug 'ctrlpvim/ctrlp.vim'
-" Plug 'pysnow530/nginx.vim'
-" Plug 'fatih/vim-go'
 Plug 'justinmk/vim-sneak'
 Plug 'rhysd/clever-f.vim'
-" Plug 'Valloric/YouCompleteMe'
-" Plug 'wakatime/vim-wakatime'
-" Plug 'ledger/vim-ledger'
-" Plug 'bounceme/restclient.vim'
-" Plug 'jceb/vim-orgmode'
-" Plug 'maksbotan/vim-orgmode', {'branch': 'add-clocking'}
-" Plug 'diepm/vim-rest-console'
-" Plug 'sharat87/roast.vim'
-" Plug 'baverman/vial'
-" Plug 'baverman/vial-http'
-" Plug 'vim-scripts/vim-http-client'
 Plug 'aquach/vim-http-client'
 Plug 'posva/vim-vue'
-" Plug 'morhetz/gruvbox'
 Plug 'dart-lang/dart-vim-plugin'
-
-" Plug 'davidhalter/jedi-vim'
-" Plug 'philip-karlsson/bolt.nvim', { 'do': ':UpdateRemotePlugins' }
-" Plug 'airodactyl/neovim-ranger'
-
-" Plug 'xolox/vim-misc'
-" Plug 'xolox/vim-easytags'  " too slow
-
-" Plug 'jsfaint/gen_tags.vim'
-
-" Plug 'vim-airline/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'
-
 Plug 'ryanoasis/vim-devicons'
-" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-
 Plug 'masukomi/vim-markdown-folding'
-
-" Plug 'liuchengxu/space-vim-theme'
-
 Plug 'posva/vim-vue'
-
-" Plug 'vim-syntastic/syntastic'
-" let g:syntastic_always_populate_loc_list = 1
-" let g:syntastic_auto_loc_list = 1
-" let g:syntastic_check_on_open = 0
-" let g:syntastic_check_on_wq = 0
-" let g:syntastic_python_checkers = ['pylint']
-" let g:syntastic_python_pylint_args = "--rcfile=.pylintrc"
-" let g:syntastic_javascript_checkers = ['eslint']
-
-" Plug 'neovim/nvim-lsp'  " 开启有异常 2019-11-23
-
-" Use release branch (Recommend)
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
-let g:coc_global_extensions = [
-            \ 'coc-python', 'coc-json', 'coc-tsserver', 'coc-phpls',
-            \ 'coc-vetur']
-" NOTE: coc-go replaced by vim-go
-
-" Use `[g` and `]g` to navigate diagnostics
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gr <Plug>(coc-references)
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -213,27 +149,6 @@ function! s:show_documentation()
     call CocAction('doHover')
   endif
 endfunction
-
-" Fix autofix problem of current line
-" nmap <leader>qf  <Plug>(coc-fix-current)  " has bug -- 2019-12-22
-" use `:OR` for organize import of current buffer
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
-Plug 'kizza/actionmenu.nvim'
-
-func! OpenContext()
-  call actionmenu#open(['Rename'], 'HandleContextClicked')
-endfunc
-
-func! HandleContextClicked(index, item)
-    if a:index < 0
-        return
-    endif
-
-    if a:item == 'Rename'
-        execute 'Semshi rename'
-    endif
-endfunc
 
 call plug#end()
 
@@ -279,87 +194,8 @@ let g:tagbar_type_go = {
 let g:tagbar_autofocus = 1
 nnoremap <leader>t :TagbarToggle<cr>
 
-" vim-colors-solarized
-set termguicolors
-set background=dark
-" colorscheme solarized
-" colorscheme NeoSolarized
-" highlight VertSplit ctermbg=NONE guibg=NONE
-
 " vim-fugitive
 nnoremap <leader>v :Gstatus<cr>
-
-" vim-bufferline
-let g:bufferline_echo = 0
-
-" Shougo/neocomplete.vim
-if v:version >= 703 && (has('lua') || has('nvim'))
-    let g:neocomplete#enable_at_startup = 1
-endif
-
-" Shougo/deoplete.nvim
-
-" kien/ctrlp.vim
-" let g:ctrlp_use_caching = 1
-" let g:ctrlp_clear_cache_on_exit = 0
-" let g:ctrlp_custom_ignore = {
-"   \ 'dir':  '\v[\/](\.git|\.hg|\.svn|node_modules)$',
-"   \ 'file': '\v\.(exe|so|dll)$',
-"   \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
-"   \ }
-
-" Valloric/YouCompleteMe
-" let g:ycm_key_list_select_completion = ['<c-n>', '<Down>']
-" let g:ycm_key_list_previous_completion = ['<c-p>', '<Up>']
-
-" jceb/vim-orgmode
-let org_agenda_files = ['~/Projects/mynote/todos/life-todo.org', '~/Projects/mynote/todos/work-todo.org']
-
-" xolox/vim-easytags
-" let g:easytags_async = 1
-
-" vim-airline/vim-airline
-" let g:airline#extensions#tabline#enabled = 1
-" let g:airline#extensions#tabline#left_sep = ''
-" let g:airline#extensions#tabline#left_alt_sep = ''
-" let g:airline#extensions#tabline#right_sep = ''
-" let g:airline#extensions#tabline#right_alt_sep = ''
-" let g:airline#extensions#tabline#formatter = 'unique_tail'
-" let g:airline#extensions#tabline#buffer_nr_show = 1
-"
-" if !exists('g:airline_symbols')
-" let g:airline_symbols = {}
-" endif
-
-" powerline symbols
-" let g:airline_left_sep = ''
-" let g:airline_left_alt_sep = ''
-" let g:airline_right_sep = ''
-" let g:airline_right_alt_sep = ''
-" let g:airline_symbols.branch = ''
-" let g:airline_symbols.readonly = ''
-" let g:airline_symbols.linenr = '☰'
-" let g:airline_symbols.maxlinenr = ''
-" let g:airline_symbols.dirty='⚡'
-
-" vim-devicons
-" enable folder/directory glyph flag (disabled by default with 0)
-" let g:WebDevIconsUnicodeDecorateFolderNodes = 1
-
-" python-mode/python-mode
-" let g:pymode_python = 'python3'
-
-" enable open and close folder/directory glyph flags (disabled by default with 0)
-" let g:DevIconsEnableFoldersOpenClose = 1
-
-py3 << EOF
-import os
-from importlib import reload
-
-if os.path.dirname(os.getenv('MYVIMRC')) in sys.path:
-    sys.path.remove(os.path.dirname(os.getenv('MYVIMRC')))
-sys.path.insert(0, os.path.dirname(os.getenv('MYVIMRC')))
-EOF
 
 " }}}
 
@@ -424,7 +260,7 @@ nnoremap <expr> ys Surround('')
 nnoremap ds :py3 plugins.surrounder.unsurround()<cr>
 " }}}
 
-" {{{ filetypes
+" {{{ config.filetypes
 set hidden  " required by vial-http
 filetype plugin indent on
 
