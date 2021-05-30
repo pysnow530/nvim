@@ -115,7 +115,6 @@ nnoremap <leader>w :set invwrap<cr>
 filetype off
 
 call plug#begin()
-" Plug 'VundleVim/Vundle.vim'
 Plug 'msanders/snipmate.vim'
 Plug 'hynek/vim-python-pep8-indent'  " neovim also has indent problem
 Plug 'vim-scripts/pylint.vim'
@@ -135,7 +134,6 @@ Plug 'rhysd/clever-f.vim'
 Plug 'aquach/vim-http-client'
 Plug 'posva/vim-vue'
 Plug 'dart-lang/dart-vim-plugin'
-Plug 'ryanoasis/vim-devicons'
 Plug 'masukomi/vim-markdown-folding'
 Plug 'posva/vim-vue'
 
@@ -258,6 +256,7 @@ endf
 
 nnoremap <expr> ys Surround('')
 nnoremap ds :py3 plugins.surrounder.unsurround()<cr>
+nnoremap cs :py3 plugins.surrounder.resurround()<cr>
 " }}}
 
 " {{{ config.filetypes
@@ -353,7 +352,6 @@ augroup filetype_python
     autocmd FileType python nnoremap <buffer> <localleader>r :!python3 %<cr>
     autocmd FileType python vnoremap <buffer> <localleader>r :!w python3<cr>
     autocmd FileType python nnoremap <buffer> <localleader>i :!python3<cr>
-    autocmd FileType python nnoremap <buffer> <return> :call OpenContext()<cr>
 augroup END
 
 augroup filetype_ruby

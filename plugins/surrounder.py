@@ -45,6 +45,27 @@ def unsurround():
         vim.current.window.cursor = (curr_row, curr_col-1)
 
 
+def resurround():
+    import vim
+
+    curr_buf = vim.current.buffer
+    charcode, new_charcode = vim.bindeval('getchar()'), vim.bindeval('getchar()')
+
+    try:
+        left_char, right_char = search_pair(chr(charcode), CONFIG)
+        new_left_char, new_right_char = search_pair(chr(new_charcode), CONFIG)
+    except ValueError as exc:
+        sys.stderr.write(str(exc))
+        sys.stderr.flush()
+        return
+
+    line = vim.current.line
+    curr_col = vim.current.window.cursor[1]
+    new_line = change_pair(line, curr_col, left_char, right_char, new_left_char, new_right_char)
+    if line != new_line:
+        vim.current.line = new_line
+
+
 def search_pair(char, pair_list):
     matches = [pair for pair in pair_list if char in pair]
     if len(matches) == 0:
@@ -57,13 +78,22 @@ def string_but(string, idx):
 
 
 def remove_pair(string, idx, left_char, right_char):
-    left_string, curr_char, right_string = string[:idx], string[idx], string[idx+1:]
+    left_string, right_string = string[:idx], string[idx:]
     if (not left_string or not right_string
             or left_char not in left_string or right_char not in right_string):
         return string
     return (string_but(left_string, left_string.rindex(left_char))
-            + curr_char
             + string_but(right_string, right_string.index(right_char)))
+
+
+def change_pair(string, idx, left_char, right_char, new_left_char, new_right_char):
+    left_string, right_string = string[:idx], string[idx:]
+    new_left_string = left_string[::-1].replace(left_char, new_left_char, 1)[::-1]
+    new_right_string = right_string.replace(right_char, new_right_char, 1)
+    if left_string != new_left_string and right_string != new_right_string:
+        return new_left_string + new_right_string
+    else:
+        return string
 
 
 if __name__ == '__main__':
@@ -75,4 +105,8 @@ if __name__ == '__main__':
 
     assert remove_pair('"hello"', 0, '"', '"') == '"hello"'
     assert remove_pair('"hello"', 1, '"', '"') == 'hello'
-    assert remove_pair('"hello"', 6, '"', '"') == '"hello"'
+    assert remove_pair('"hello"', 6, '"', '"') == 'hello'
+
+    assert change_pair('"hello"', 0, '"', '"', "'", "'") == '"hello"'
+    assert change_pair('"hello"', 1, '"', '"', "'", "'") == "'hello'"
+    assert change_pair('"hello"', 6, '"', '"', "'", "'") == "'hello'"
