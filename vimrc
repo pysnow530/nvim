@@ -115,27 +115,17 @@ nnoremap <leader>w :set invwrap<cr>
 filetype off
 
 call plug#begin()
-Plug 'msanders/snipmate.vim'
 Plug 'hynek/vim-python-pep8-indent'  " neovim also has indent problem
-Plug 'vim-scripts/pylint.vim'
 Plug 'mattn/emmet-vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
 Plug 'lvht/tagbar-markdown'
-Plug 'pysnow530/snipmate-snippets'
-Plug 'ap/vim-css-color'
 Plug 'tpope/vim-fugitive'
 Plug 'cohama/lexima.vim'
-
 Plug 'vim-scripts/argtextobj.vim'
 Plug 'justinmk/vim-sneak'
 Plug 'rhysd/clever-f.vim'
-Plug 'aquach/vim-http-client'
-Plug 'posva/vim-vue'
-Plug 'dart-lang/dart-vim-plugin'
-Plug 'masukomi/vim-markdown-folding'
-Plug 'posva/vim-vue'
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -149,9 +139,6 @@ function! s:show_documentation()
 endfunction
 
 call plug#end()
-
-" snipmate.vim
-let g:snips_author = 'jianming.wu'
 
 " emmet-vim
 let g:user_emmet_leader_key = '<leader>e'
@@ -330,28 +317,13 @@ function! GetGitRootDir()
     return ''
 endfunction
 
-function! RunWithPython(exe_cmd_tmpl)
-    let root_dir = GetGitRootDir()
-    if (root_dir != '' && filereadable(root_dir . '/.env/bin/python'))
-        let python_path = root_dir . '/.env/bin/python'
-    elseif (root_dir != '' && filereadable(root_dir . '/.venv/bin/python'))
-        let python_path = root_dir . '/.venv/bin/python'
-    else
-        let python_path = 'python3'
-    endif
-
-    let exec_cmd = substitute(a:exe_cmd_tmpl, '{python_path}', python_path, '')
-    execute exec_cmd
-endfunction
-
 augroup filetype_python
     autocmd!
     autocmd FileType python setlocal fdm=indent
-    autocmd FileType python setlocal makeprg=pylint\ --reports=n\ --output-format=parseable\ %:p
-    autocmd FileType python setlocal errorformat=%f:%l:\ %m
     autocmd FileType python nnoremap <buffer> <localleader>r :!python3 %<cr>
-    autocmd FileType python vnoremap <buffer> <localleader>r :!w python3<cr>
     autocmd FileType python nnoremap <buffer> <localleader>i :!python3<cr>
+    autocmd FileType python iabbrev <buffer> im import
+    autocmd FileType python iabbrev <buffer> ifmain if __name__ == '__main__'
 augroup END
 
 augroup filetype_ruby
