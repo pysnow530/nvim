@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
+import sys
 import re
 from functools import partial
 
@@ -33,6 +34,8 @@ def treedir(dir, ignores=None):
             result.append(item)
         if os.path.isdir(item):
             result.extend(treedir(item, ignores=ignores))
+        if len(result) > 5000:
+            raise IOError('File is too much to tree, more than 5000!')
     return result
 
 
@@ -64,11 +67,20 @@ def load_items(dir, search):
 def ctrlp(new=False):
     import vim
 
+    cwd = vim._getcwd()
+    search = '' if new else vim.current.buffer[0]  # current buffer is not ctrlp window if new
+
+    try:
+        items = load_items(cwd, search)[:10] + (['...'] if len(load_items(cwd, search)) > 10 else [])
+    except IOError as exc:
+        sys.stderr.write(str(exc))
+        sys.stderr.flush()
+        return
+
     if new:
         vim.command('6new | set ft=ctrlp | startinsert')
 
-    cwd, search = vim._getcwd(), vim.current.buffer[0]
-    vim.current.buffer[1:] = load_items(cwd, search)[:10] + (['...'] if len(load_items(cwd, search)) > 10 else [])
+    vim.current.buffer[1:] = items
 
 
 def edit():

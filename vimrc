@@ -34,7 +34,6 @@ set history=50
 set showcmd
 set hlsearch
 set incsearch
-set guifont=SauceCodeProNerdFontCo-Regular:h11
 set showmatch
 set scrolloff=1
 set nowrap
@@ -187,8 +186,6 @@ nnoremap <leader>v :Gstatus<cr>
 " {{{ plugins.commenter
 py3 import plugins.commenter; reload(plugins.commenter)
 
-py3 plugins.commenter.COMMENTER_CONFIG = {'python': '#', 'vim': '"'}
-
 fun! ToggleBlockComment(type) abort
     if a:type == ''
         set opfunc=ToggleBlockComment
@@ -247,7 +244,6 @@ nnoremap cs :py3 plugins.surrounder.resurround()<cr>
 " }}}
 
 " {{{ config.filetypes
-set hidden  " required by vial-http
 filetype plugin indent on
 
 augroup filetype_shell
@@ -294,28 +290,6 @@ augroup filetype_javascript
     autocmd FileType javascript vnoremap <buffer> <localleader>r :w !node<cr>
     autocmd FileType javascript nnoremap <buffer> <localleader>i :!node<cr>
 augroup END
-
-augroup filetype_dart
-    autocmd!
-    autocmd FileType dart setlocal tabstop=2
-    autocmd FileType dart setlocal softtabstop=2
-    autocmd FileType dart setlocal shiftwidth=2
-    autocmd FileType dart nnoremap <buffer> <localleader>r :!dart %<cr>
-augroup END
-
-function! GetGitRootDir()
-    let curr_path = '%:p:h'
-
-    for i in range(10)
-        if isdirectory(expand(curr_path) . '/.git')
-            return expand(curr_path)
-        endif
-
-        let curr_path = curr_path . ':h'
-    endfor
-
-    return ''
-endfunction
 
 augroup filetype_python
     autocmd!
@@ -391,14 +365,6 @@ augroup filetype_markdown
     autocmd BufNewFile,BufReadPost *.md,README set filetype=markdown
 augroup END
 
-augroup filetype_snippet
-    autocmd!
-    autocmd FileType snippet setlocal shiftwidth=8
-    autocmd FileType snippet setlocal tabstop=8
-    autocmd FileType snippet setlocal softtabstop=8
-    autocmd BufWritePost *.snippets call ReloadSnippets(expand('%:t:r'))
-augroup END
-
 augroup filetype_go
     autocmd!
     autocmd FileType go setlocal shiftwidth=8
@@ -417,16 +383,6 @@ augroup filetype_java
     autocmd FileType java nnoremap <buffer> <localleader>r :!javac -Xlint:all % && java %:r<cr>
 augroup END
 
-augroup filetype_wxml
-    autocmd!
-    autocmd BufNewFile,BufReadPost *.wxml set filetype=xml
-augroup END
-
-augroup filetype_wxss
-    autocmd!
-    autocmd BufNewFile,BufReadPost *.wxss set filetype=css
-augroup END
-
 augroup filetype_vue
     autocmd!
     autocmd FileType vue set tabstop=2
@@ -440,34 +396,11 @@ augroup filetype_perl
     autocmd FileType perl vnoremap <buffer> <localleader>r :w !perl<cr>
 augroup END
 
-augroup filetype_ledger
-    autocmd!
-    autocmd FileType ledger nnoremap <buffer> <localleader>r :!ledger -f % balance<cr>
-augroup END
-
-augroup filetype_restclient
-    autocmd!
-    " autocmd BufNewFile,BufReadPost *.http set filetype=restclient
-    autocmd FileType vial-http nnoremap <buffer> <cr> :VialHttp<cr>
-augroup END
-
-augroup filetype_http
-    autocmd!
-    autocmd BufNewFile,BufReadPost *.http set filetype=http
-    autocmd FileType http syntax keyword Keyword GET POST DELETE PUT
-    autocmd FileType http syntax match Comment /#.*/
-    autocmd FileType http syntax match String +http://.*+
-    autocmd FileType http syntax match Identifier /^[A-Za-z-]\+:/
-    autocmd FileType http syntax region String start=/"/ end=/"/
-    autocmd FileType http nnoremap <buffer> <localleader>r :HTTPClientDoRequest<cr>
-augroup END
-
 augroup filetype_yaml
     autocmd!
     autocmd FileType yaml setlocal tabstop=2
     autocmd FileType yaml setlocal softtabstop=2
     autocmd FileType yaml setlocal shiftwidth=2
-    autocmd FileType yaml nnoremap <buffer> <localleader>r :!kubectl apply -n=jianming -f=%<cr>
 augroup END
 
 augroup filetype_lisp
@@ -480,55 +413,5 @@ augroup filetype_haskell
     autocmd!
     autocmd FileType haskell nnoremap <buffer> <localleader>r :!stack runhaskell %<cr>
     autocmd FileType haskell nnoremap <buffer> <localleader>i :!stack ghci<cr>
-augroup END
-
-function! s:GuessPipeFiletype()
-    " json
-    let l:line_first = getline(1)
-    let l:line_last = getline('$')
-    if l:line_first[0] == '{' && l:line_last[len(l:line_last)-1] == '}'
-                \ || l:line_first[0] == '[' && l:line_last[len(l:line_last)-1] == ']'
-        return 'json'
-    endif
-
-    " sql
-    for l:lnum in range(line('.'), line('$'))
-        let l:line = getline(l:lnum)
-        if (l:line =~? '\<create database\>'
-                    \ || l:line =~? '\<create table\>'
-                    \ || l:line =~? '\<insert into\>'
-                    \ || l:line =~? '\<delete from\>'
-                    \ || l:line =~? '\<alter table\>')
-            return 'sql'
-        endif
-    endfor
-
-    return 'sh'
-endfunction
-
-fun! s:SetPipeFiletype() abort
-    let l:from_pipe = (argc() == 0) && ((line('.') > 1) || (getline(1) != ''))
-    if l:from_pipe
-        let l:filetype = s:GuessPipeFiletype()
-        execute 'set filetype=' . l:filetype
-
-        if l:filetype == 'json' && line('$') == 1
-            execute "1!python -c 'import json, sys; reload(sys); " .
-                        \ "sys.setdefaultencoding(\"utf8\"); " .
-                        \ "print json.dumps(json.load(sys.stdin), ensure_ascii=False, indent=4)'"
-        endif
-    endif
-endf
-
-fun! s:FindFile() abort
-    if argc() == 1 && !filereadable(argv()[0]) && argv()[0][0] == '/' && len(split(argv()[0], '/')) > 0 && !isdirectory('/'.split(argv()[0], '/')[0])
-        execute 'NewGrep' '"'.argv()[0][1:].'"'
-    endif
-endf
-
-augroup filetype_init
-    autocmd!
-    autocmd VimEnter * call s:SetPipeFiletype()
-    autocmd VimEnter * call s:FindFile()
 augroup END
 " }}}
