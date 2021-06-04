@@ -126,17 +126,6 @@ Plug 'vim-scripts/argtextobj.vim'
 Plug 'justinmk/vim-sneak'
 Plug 'rhysd/clever-f.vim'
 
-" Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
 call plug#end()
 
 " emmet-vim
@@ -246,6 +235,12 @@ nnoremap cs :py3 plugins.surrounder.resurround()<cr>
 " {{{ config.filetypes
 filetype plugin indent on
 
+augroup filetype_vim
+    autocmd!
+    autocmd FileType vim setlocal fdm=marker
+    autocmd FileType vim nnoremap <buffer> <localleader>r :so %<cr>
+augroup END
+
 augroup filetype_shell
     autocmd!
     autocmd FileType sh nnoremap <buffer> <localleader>r :!sh %<cr>
@@ -305,14 +300,6 @@ augroup filetype_ruby
     autocmd FileType ruby nnoremap <buffer> <localleader>r :!ruby %<cr>
     autocmd FileType ruby vnoremap <buffer> <localleader>r :w !ruby<cr>
     autocmd FileType ruby nnoremap <buffer> <localleader>s :!irb<cr>
-augroup END
-
-augroup filetype_vim
-    autocmd!
-    autocmd FileType vim setlocal fdm=marker
-    autocmd FileType vim nnoremap <buffer> <localleader>r :so %<cr>
-    command! -nargs=1 Vimdoc help <args>
-    autocmd FileType vim setlocal keywordprg=:Vimdoc
 augroup END
 
 augroup filetype_makefile
