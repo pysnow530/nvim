@@ -123,8 +123,6 @@ Plug 'lvht/tagbar-markdown'
 Plug 'tpope/vim-fugitive'
 Plug 'cohama/lexima.vim'
 Plug 'vim-scripts/argtextobj.vim'
-Plug 'rhysd/clever-f.vim'
-
 call plug#end()
 
 " emmet-vim
