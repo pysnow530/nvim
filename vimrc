@@ -127,9 +127,6 @@ Plug 'lvht/tagbar-markdown'
 Plug 'tpope/vim-fugitive'
 Plug 'cohama/lexima.vim'
 Plug 'vim-scripts/argtextobj.vim'
-Plug 'justinmk/vim-sneak'
-Plug 'rhysd/clever-f.vim'
-
 call plug#end()
 
 " emmet-vim
@@ -234,6 +231,16 @@ endf
 nnoremap <expr> ys Surround('')
 nnoremap ds :py3 plugins.surrounder.unsurround()<cr>
 nnoremap cs :py3 plugins.surrounder.resurround()<cr>
+" }}}
+
+" {{{ plugins.sneak
+fun! Sneak()
+    let search = nr2char(getchar()) . nr2char(getchar())
+    let @/ = search
+    execute 'normal! n'
+endfun
+
+nnoremap s :call Sneak()<cr>
 " }}}
 
 " {{{ config.filetypes
