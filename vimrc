@@ -11,6 +11,10 @@ let mapleader = ","
 let maplocalleader = '\'
 " }}}
 
+" {{{ config.environ
+let $PATH = '/bin:/usr/bin:/usr/local/bin:/opt/local/bin'
+" }}}
+
 " {{{ plugins.requirements
 if !has('python3')
     execute '!echo "vim --enable-python3interp was required"'
@@ -278,9 +282,9 @@ augroup END
 
 augroup filetype_javascript
     autocmd!
-    autocmd FileType javascript setlocal tabstop=2
-    autocmd FileType javascript setlocal softtabstop=2
-    autocmd FileType javascript setlocal shiftwidth=2
+    autocmd FileType javascript setlocal tabstop=4
+    autocmd FileType javascript setlocal softtabstop=4
+    autocmd FileType javascript setlocal shiftwidth=4
     autocmd FileType javascript nnoremap <buffer> <localleader>r :!node %<cr>
     autocmd FileType javascript vnoremap <buffer> <localleader>r :w !node<cr>
     autocmd FileType javascript nnoremap <buffer> <localleader>i :!node<cr>
@@ -290,6 +294,7 @@ augroup filetype_python
     autocmd!
     autocmd FileType python setlocal fdm=indent
     autocmd FileType python nnoremap <buffer> <localleader>r :!python3 %<cr>
+    autocmd FileType python vnoremap <buffer> <localleader>r :w !python3<cr>
     autocmd FileType python nnoremap <buffer> <localleader>i :!python3<cr>
     autocmd FileType python iabbrev <buffer> im import
     autocmd FileType python iabbrev <buffer> ifmain if __name__ == '__main__'
@@ -350,6 +355,7 @@ augroup filetype_markdown
     autocmd!
     autocmd FileType markdown setlocal wrap
     autocmd BufNewFile,BufReadPost *.md,README set filetype=markdown
+    autocmd FileType markdown vnoremap <buffer> <localleader>r :w !python3<cr>
 augroup END
 
 augroup filetype_go
