@@ -12,11 +12,11 @@ def index_map(s):
     return reduce(
         lambda r, c: dict(
             list(r.items())
-            + list({r['_f']: r['_t'],
-                    '_f': r['_f'] + len(c.encode()),
+            + list({'_f': r['_f'] + len(c.encode()),
                     '_t': r['_t'] + 1,
+                    r['_f'] + len(c.encode()): r['_t'] + 1,
                     }.items())),
-        s, {'_f': 0, '_t': 0})
+        s, {0: 0, '_f': 0, '_t': 0})
 
 
 def surround():
