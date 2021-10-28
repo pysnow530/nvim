@@ -47,7 +47,7 @@ set foldlevel=99  " don't fold on opened
 
 set termguicolors
 set background=dark
-colorscheme desert
+colorscheme solarized8
 
 " set cursorline
 if exists('+colorcolumn') | set colorcolumn=100 | endif
@@ -128,6 +128,7 @@ Plug 'lvht/tagbar-markdown'
 Plug 'tpope/vim-fugitive'
 Plug 'cohama/lexima.vim'
 Plug 'vim-scripts/argtextobj.vim'
+Plug 'lifepillar/vim-solarized8'
 call plug#end()
 
 " emmet-vim
