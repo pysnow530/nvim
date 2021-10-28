@@ -8,7 +8,9 @@ from functools import partial
 __all__ = ['COMMENTER_CONFIG', 'toggle_block_comment']
 
 
-COMMENTER_CONFIG = {'python': '#', 'vim': '"', 'zsh': '#', 'conf': '#', 'js': '//', 'sh': '#'}
+COMMENTER_CONFIG = {
+    'python': '#', 'vim': '"', 'zsh': '#', 'conf': '#', 'js': '//', 'sh': '#', 'ruby': '#',
+    'javascript': '//'}
 
 
 def commenter_generator(comment):

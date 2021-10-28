@@ -5,7 +5,7 @@ import sys
 import re
 from functools import partial
 
-IGNORE_CONFIG = ['.*', '*.pyc']
+IGNORE_CONFIG = ['.*', '*.pyc', 'bower_components']
 
 CACHE = {}
 

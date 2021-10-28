@@ -12,7 +12,7 @@ let maplocalleader = '\'
 " }}}
 
 " {{{ config.environ
-let $PATH = '/bin:/usr/bin:/usr/local/bin:/opt/local/bin'
+let $PATH = '/usr/local/bin:/bin:/usr/bin:/usr/local/bin:/opt/local/bin'
 " }}}
 
 " {{{ plugins.requirements
@@ -38,6 +38,7 @@ set history=50
 set showcmd
 set hlsearch
 set incsearch
+set cursorline
 set showmatch
 set scrolloff=1
 set nowrap
@@ -279,12 +280,13 @@ augroup END
 
 augroup filetype_html
     autocmd!
-    autocmd FileType html,htmldjango setlocal tabstop=2
-    autocmd FileType html,htmldjango setlocal softtabstop=2
-    autocmd FileType html,htmldjango setlocal shiftwidth=2
+    autocmd FileType html,htmldjango setlocal tabstop=4
+    autocmd FileType html,htmldjango setlocal softtabstop=4
+    autocmd FileType html,htmldjango setlocal shiftwidth=4
     autocmd FileType html,htmldjango nnoremap <buffer> <localleader>r :!open %<cr>
     autocmd FileType html,htmldjango setlocal foldmethod=indent
     autocmd FileType htmldjango setlocal filetype=htmldjango.html
+    autocmd FileType javascript iabbrev <buffer> clog console.log
 augroup END
 
 augroup filetype_javascript
@@ -295,6 +297,7 @@ augroup filetype_javascript
     autocmd FileType javascript nnoremap <buffer> <localleader>r :!node %<cr>
     autocmd FileType javascript vnoremap <buffer> <localleader>r :w !node<cr>
     autocmd FileType javascript nnoremap <buffer> <localleader>i :!node<cr>
+    autocmd FileType javascript iabbrev <buffer> clog console.log
 augroup END
 
 augroup filetype_python
