@@ -47,7 +47,6 @@ set foldlevel=99  " don't fold on opened
 
 set termguicolors
 set background=dark
-colorscheme solarized8
 
 " set cursorline
 if exists('+colorcolumn') | set colorcolumn=100 | endif
@@ -172,6 +171,9 @@ nnoremap <leader>t :TagbarToggle<cr>
 
 " vim-fugitive
 nnoremap <leader>v :Gstatus<cr>
+
+" solarized8
+colorscheme solarized8
 
 " }}}
 
