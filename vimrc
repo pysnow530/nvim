@@ -16,11 +16,6 @@ let $PATH = '/usr/local/bin:/bin:/usr/bin:/usr/local/bin:/opt/local/bin'
 " }}}
 
 " {{{ plugins.requirements
-if !has('python3')
-    execute '!echo "vim --enable-python3interp was required"'
-    execute 'quit'
-endif
-
 py3 << EOF
 import os
 from importlib import reload
@@ -177,21 +172,44 @@ colorscheme solarized8
 
 " }}}
 
-" {{{ plugins.commenter
-py3 import plugins.commenter; reload(plugins.commenter)
+function! Map(expr1, expr2) abort
+    return map(deepcopy(a:expr1), a:expr2)
+endfunction
 
-fun! ToggleBlockComment(type) abort
+function! All(expr1, expr2) abort
+    let result_list = Map(a:expr1, a:expr2)
+    let result = 1
+    for i in result_list
+        let result = result && i
+    endfor
+    return result
+endfunction
+
+" {{{ commenter
+nnoremap <expr> gc ToggleComment()
+xnoremap <expr> gc ToggleComment()
+nnoremap <expr> gcc ToggleComment() . '_'
+
+function! ToggleComment(type='') abort
     if a:type == ''
-        set opfunc=ToggleBlockComment
+        set opfunc=ToggleComment
         return 'g@'
     endif
 
-    py3 plugins.commenter.toggle_block_comment()
-endf
+    let comment_char = get({'vim': '"', 'javascript': '\/\/'}, &ft, '#')
 
-nnoremap <expr> gc ToggleBlockComment('')
-xnoremap <expr> gc ToggleBlockComment('')
-nnoremap <expr> gcc ToggleBlockComment('') . '_'
+    let lines = getline("'[", "']")
+    let commented = All(lines, {_, v -> v =~ '^\s*' . comment_char . ' '})
+
+    " TODO: keep cursor position
+    " TODO: compatible vim7
+    if commented
+        execute "'[,']" 's/\(\s*\)' . comment_char . ' /\1'
+    else
+        let nr_spaces = min(map(lines, {_, v -> len(matchstr(v, '^\s*'))}))
+        execute "'[,']" 's/^\(\s\{' . nr_spaces . '\}\)/\1' . comment_char . ' '
+    endif
+endfunction
 " }}}
 
 " {{{ plugins.tabular
