@@ -256,7 +256,7 @@ function! Unsurround() abort
         let b:last_winview['topline'] -= 1
     endif
     call winrestview(b:last_winview)
-    execute "normal! \<c-o>"
+    execute "normal! \<c-o>h"
 endfunction
 
 function! Resurround() abort
