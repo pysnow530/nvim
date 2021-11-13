@@ -212,16 +212,6 @@ function! ToggleComment(type='') abort
 endfunction
 " }}}
 
-" {{{ plugins.tabular
-py3 import plugins.tabular; reload(plugins.tabular)
-
-fun! Tabular(sep, start, end) abort
-    py3 plugins.tabular.tabular()  # a:sep, a:start, a:end
-endf
-
-command -range -nargs=1 Tab :call Tabular(<q-args>, <line1>, <line2>)
-" }}}
-
 " {{{ plugins.ctrlp
 py3 import plugins.ctrlp; reload(plugins.ctrlp)
 
