@@ -212,22 +212,6 @@ function! ToggleComment(type='') abort
 endfunction
 " }}}
 
-" {{{ plugins.ctrlp
-py3 import plugins.ctrlp; reload(plugins.ctrlp)
-
-nnoremap <c-p> :py3 plugins.ctrlp.ctrlp(True)<cr>
-
-augroup filetype_ctrlp
-    autocmd!
-    " TODO: fix cannot delete old input after switch to normal mode and back
-    autocmd FileType ctrlp inoremap <buffer> <c-j> <c-o>j
-    autocmd FileType ctrlp inoremap <buffer> <c-k> <c-o>k
-    autocmd FileType ctrlp inoremap <buffer> <c-c> <esc>:bdelete!<cr>
-    autocmd FileType ctrlp inoremap <buffer> <cr> <esc>:py3 plugins.ctrlp.edit()<cr>
-    autocmd FileType ctrlp autocmd TextChangedI <buffer=abuf> :py3 plugins.ctrlp.syntax(); plugins.ctrlp.ctrlp(False)
-augroup END
-" }}}
-
 " {{{ plugins.surrounder
 py3 import plugins.surrounder; reload(plugins.surrounder)
 
