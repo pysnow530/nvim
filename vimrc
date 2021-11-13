@@ -15,18 +15,6 @@ let maplocalleader = '\'
 let $PATH = '/usr/local/bin:/bin:/usr/bin:/usr/local/bin:/opt/local/bin'
 " }}}
 
-" {{{ plugins.requirements
-py3 << EOF
-import os
-from importlib import reload
-
-if os.path.dirname(os.getenv('MYVIMRC')) in sys.path:
-    sys.path.remove(os.path.dirname(os.getenv('MYVIMRC')))
-sys.path.insert(0, os.path.dirname(os.getenv('MYVIMRC')))
-EOF
-
-" }}}
-
 " {{{ config.ui
 syntax on
 set history=50
@@ -65,7 +53,7 @@ fun! ToggleAllFolds() abort
         execute 'normal zM'
     endif
 endf
-nnoremap <S-TAB> :call ToggleAllFolds()<cr>
+nnoremap <S-TAB> :call ToggleAllFolds()<CR>
 nnoremap <SPACE> za  " remap <TAB> will cause <CTRL-i> remapped
 " }}}
 
@@ -89,7 +77,7 @@ set mouse=a
 
 inoremap jk <ESC>
 inoremap <c-u> <esc>vbUea
-nnoremap <leader>b :b#<cr>
+nnoremap <leader>b :b#<CR>
 if isdirectory('.git') || isdirectory('../.git') || isdirectory('../../.git')
     set grepprg=git\ grep\ -n\ $*
 else
@@ -102,11 +90,11 @@ nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 nnoremap <c-l> <c-w>l
 nnoremap <leader><leader> q:
-nnoremap <leader>k :q<cr>
-nnoremap <leader>j :w<cr>
+nnoremap <leader>k :q<CR>
+nnoremap <leader>j :w<CR>
 
-nnoremap <leader>s :e ~/.vim/vimrc<cr>
-nnoremap <leader>w :set invwrap<cr>
+nnoremap <leader>s :e ~/.vim/vimrc<CR>
+nnoremap <leader>w :set invwrap<CR>
 " }}}
 
 " {{{ plugins.global
@@ -130,7 +118,7 @@ let g:user_emmet_leader_key = '<leader>e'
 
 " nerdtree
 let g:NERDTreeQuitOnOpen = 0
-nnoremap <leader>n :NERDTreeToggle<cr>
+nnoremap <leader>n :NERDTreeToggle<CR>
 let NERDTreeIgnore = ['\~$', '\.class$', '\.pyc$']
 
 " tagbar
@@ -162,10 +150,10 @@ let g:tagbar_type_go = {
     \ 'ctagsargs' : '-sort -silent'
 \ }
 let g:tagbar_autofocus = 1
-nnoremap <leader>t :TagbarToggle<cr>
+nnoremap <leader>t :TagbarToggle<CR>
 
 " vim-fugitive
-nnoremap <leader>v :Gstatus<cr>
+nnoremap <leader>v :Gstatus<CR>
 
 " solarized8
 colorscheme solarized8
@@ -206,27 +194,94 @@ function! ToggleComment(type='') abort
     if commented
         execute "'[,']" 's/\(\s*\)' . comment_char . ' /\1'
     else
-        let nr_spaces = min(map(lines, {_, v -> len(matchstr(v, '^\s*'))}))
+        let nr_spaces = min(map(lines, {_, v -> strwidth(matchstr(v, '^\s*'))}))
         execute "'[,']" 's/^\(\s\{' . nr_spaces . '\}\)/\1' . comment_char . ' '
     endif
 endfunction
 " }}}
 
-" {{{ plugins.surrounder
-py3 import plugins.surrounder; reload(plugins.surrounder)
+" {{{ surrounder
+nnoremap <silent> ys :let b:last_winview = winsaveview() <Bar> set opfunc=Surround<CR>g@
+nnoremap ds :let b:last_winview = winsaveview() <Bar> call Unsurround()<CR>
+nnoremap cs :let b:last_winview = winsaveview() <Bar> call Resurround()<CR>
 
-fun! Surround(type) abort
-    if a:type == ''
-        set opfunc=Surround
-        return 'g@'
+function! Surround(type) abort
+    let right_char = nr2char(getchar())
+    let left_char = get({')': '(', ']': '[', '}': '{'}, right_char, right_char)
+
+    let [_, left_lnum, left_col, left_offset] = getpos("'[")
+    let [_, right_lnum, right_col, right_offset] = getpos("']")
+
+    if a:type == 'char'
+        call cursor(right_lnum, right_col, right_offset)
+        execute 'normal! a' . right_char
+        call cursor(left_lnum, left_col, left_offset)
+        execute 'normal! i' . left_char
+    else  " line
+        call append(right_lnum, right_char)
+        call append(left_lnum - 1, left_char)
     endif
 
-    py3 plugins.surrounder.surround()
-endf
+    " fix window view
+    if a:type == 'line'
+        let b:last_winview['topline'] += 1
+    endif
+    call winrestview(b:last_winview)
 
-nnoremap <expr> ys Surround('')
-nnoremap ds :py3 plugins.surrounder.unsurround()<cr>
-nnoremap cs :py3 plugins.surrounder.resurround()<cr>
+    if a:type == 'char'
+        call setpos('.', [0, b:last_winview['lnum'], b:last_winview['col'] + 2, 0])
+    else
+        call setpos('.', [0, b:last_winview['lnum'] + 1, b:last_winview['col'] + 1, 0])
+    endif
+endfunction
+
+function! Unsurround() abort
+    let right_char = nr2char(getchar())
+    let left_char = get({')': '(', ']': '[', '}': '{'}, right_char, right_char)
+
+    execute "normal! m'"
+    call search(right_char)
+    execute trim(getline('.')) == right_char ? "normal! dd" : "normal! x"
+    execute "normal! \<c-o>"
+
+    execute "normal! m'"
+    call search(left_char, 'b')
+    let linewise = trim(getline('.')) == left_char
+    execute trim(getline('.')) == left_char ? "normal! dd" : "normal! x"
+    execute "normal! \<c-o>"
+
+    " fix window view
+    execute "normal! m'"
+    if linewise
+        let b:last_winview['topline'] -= 1
+    endif
+    call winrestview(b:last_winview)
+    execute "normal! \<c-o>"
+endfunction
+
+function! Resurround() abort
+    let right_char = nr2char(getchar())
+    let left_char = get({')': '(', ']': '[', '}': '{'}, right_char, right_char)
+
+    let new_right_char = nr2char(getchar())
+    let new_left_char = get({')': '(', ']': '[', '}': '{'}, new_right_char, new_right_char)
+
+    execute "normal! m'"
+    call search(right_char)
+    execute "normal! r" . new_right_char
+    execute "normal! \<c-o>"
+
+    execute "normal! m'"
+    call search(left_char, 'b')
+    let linewise = trim(getline('.')) == left_char
+    execute "normal! r" . new_left_char
+    execute "normal! \<c-o>"
+
+    " fix window view
+    execute "normal! m'"
+    call winrestview(b:last_winview)
+    execute "normal! \<c-o>"
+endfunction
 " }}}
 
 " {{{ plugins.sneak
@@ -236,7 +291,7 @@ fun! Sneak()
     execute 'normal! n'
 endfun
 
-nnoremap s :call Sneak()<cr>
+nnoremap s :call Sneak()<CR>
 " }}}
 
 " {{{ config.filetypes
@@ -245,32 +300,32 @@ filetype plugin indent on
 augroup filetype_vim
     autocmd!
     autocmd FileType vim setlocal fdm=marker
-    autocmd FileType vim nnoremap <buffer> <localleader>r :so %<cr>
+    autocmd FileType vim nnoremap <buffer> <localleader>r :so %<CR>
 augroup END
 
 augroup filetype_shell
     autocmd!
-    autocmd FileType sh nnoremap <buffer> <localleader>r :!sh %<cr>
-    autocmd FileType sh vnoremap <buffer> <localleader>r :w !sh<cr>
-    autocmd FileType sh nnoremap <buffer> <localleader>d :!sh -x %<cr>
+    autocmd FileType sh nnoremap <buffer> <localleader>r :!sh %<CR>
+    autocmd FileType sh vnoremap <buffer> <localleader>r :w !sh<CR>
+    autocmd FileType sh nnoremap <buffer> <localleader>d :!sh -x %<CR>
 augroup END
 
 augroup filetype_php
     autocmd!
-    autocmd FileType php nnoremap <buffer> <localleader>r :!php %<cr>
-    autocmd FileType php vnoremap <buffer> <localleader>r :w !php<cr>
+    autocmd FileType php nnoremap <buffer> <localleader>r :!php %<CR>
+    autocmd FileType php vnoremap <buffer> <localleader>r :w !php<CR>
     command! -nargs=1 Phpdoc !open http://php.net/<args>
     autocmd FileType php setlocal keywordprg=:Phpdoc
 augroup END
 
 augroup filetype_c
     autocmd!
-    autocmd FileType c nnoremap <buffer> <localleader>r :!gcc % && ./a.out<cr>
+    autocmd FileType c nnoremap <buffer> <localleader>r :!gcc % && ./a.out<CR>
 augroup END
 
 augroup filetype_cpp
     autocmd!
-    autocmd FileType cpp nnoremap <buffer> <localleader>r :!g++ % && ./a.out<cr>
+    autocmd FileType cpp nnoremap <buffer> <localleader>r :!g++ % && ./a.out<CR>
 augroup END
 
 augroup filetype_html
@@ -278,7 +333,7 @@ augroup filetype_html
     autocmd FileType html,htmldjango setlocal tabstop=4
     autocmd FileType html,htmldjango setlocal softtabstop=4
     autocmd FileType html,htmldjango setlocal shiftwidth=4
-    autocmd FileType html,htmldjango nnoremap <buffer> <localleader>r :!open %<cr>
+    autocmd FileType html,htmldjango nnoremap <buffer> <localleader>r :!open %<CR>
     autocmd FileType html,htmldjango setlocal foldmethod=indent
     autocmd FileType htmldjango setlocal filetype=htmldjango.html
     autocmd FileType javascript iabbrev <buffer> clog console.log
@@ -289,27 +344,27 @@ augroup filetype_javascript
     autocmd FileType javascript setlocal tabstop=4
     autocmd FileType javascript setlocal softtabstop=4
     autocmd FileType javascript setlocal shiftwidth=4
-    autocmd FileType javascript nnoremap <buffer> <localleader>r :!node %<cr>
-    autocmd FileType javascript vnoremap <buffer> <localleader>r :w !node<cr>
-    autocmd FileType javascript nnoremap <buffer> <localleader>i :!node<cr>
+    autocmd FileType javascript nnoremap <buffer> <localleader>r :!node %<CR>
+    autocmd FileType javascript vnoremap <buffer> <localleader>r :w !node<CR>
+    autocmd FileType javascript nnoremap <buffer> <localleader>i :!node<CR>
     autocmd FileType javascript iabbrev <buffer> clog console.log
 augroup END
 
 augroup filetype_python
     autocmd!
     autocmd FileType python setlocal fdm=indent
-    autocmd FileType python nnoremap <buffer> <localleader>r :!python3 %<cr>
-    autocmd FileType python vnoremap <buffer> <localleader>r :w !python3<cr>
-    autocmd FileType python nnoremap <buffer> <localleader>i :!python3<cr>
+    autocmd FileType python nnoremap <buffer> <localleader>r :!python3 %<CR>
+    autocmd FileType python vnoremap <buffer> <localleader>r :w !python3<CR>
+    autocmd FileType python nnoremap <buffer> <localleader>i :!python3<CR>
     autocmd FileType python iabbrev <buffer> im import
     autocmd FileType python iabbrev <buffer> ifmain if __name__ == '__main__'
 augroup END
 
 augroup filetype_ruby
     autocmd!
-    autocmd FileType ruby nnoremap <buffer> <localleader>r :!ruby %<cr>
-    autocmd FileType ruby vnoremap <buffer> <localleader>r :w !ruby<cr>
-    autocmd FileType ruby nnoremap <buffer> <localleader>s :!irb<cr>
+    autocmd FileType ruby nnoremap <buffer> <localleader>r :!ruby %<CR>
+    autocmd FileType ruby vnoremap <buffer> <localleader>r :w !ruby<CR>
+    autocmd FileType ruby nnoremap <buffer> <localleader>s :!irb<CR>
 augroup END
 
 augroup filetype_makefile
@@ -321,46 +376,46 @@ augroup END
 
 augroup filetype_lua
     autocmd!
-    autocmd FileType lua nnoremap <buffer> <localleader>r :!lua %<cr>
-    autocmd FileType lua vnoremap <buffer> <localleader>r :w !lua<cr>
-    autocmd FileType lua nnoremap <buffer> <localleader>i :!lua<cr>
+    autocmd FileType lua nnoremap <buffer> <localleader>r :!lua %<CR>
+    autocmd FileType lua vnoremap <buffer> <localleader>r :w !lua<CR>
+    autocmd FileType lua nnoremap <buffer> <localleader>i :!lua<CR>
 augroup END
 
 augroup filetype_cs
     autocmd!
-    autocmd FileType cs nnoremap <buffer> <localleader>b :!csc.exe /out:%:r.exe %<cr>
-    autocmd FileType cs nnoremap <buffer> <localleader>r :!%:r.exe<cr>
+    autocmd FileType cs nnoremap <buffer> <localleader>b :!csc.exe /out:%:r.exe %<CR>
+    autocmd FileType cs nnoremap <buffer> <localleader>r :!%:r.exe<CR>
 augroup END
 
 augroup filetype_scheme
     autocmd!
-    autocmd FileType scheme nnoremap <buffer> <localleader>r :!mzscheme %<cr>
-    autocmd FileType scheme vnoremap <buffer> <localleader>r :w !mzscheme<cr>
+    autocmd FileType scheme nnoremap <buffer> <localleader>r :!mzscheme %<CR>
+    autocmd FileType scheme vnoremap <buffer> <localleader>r :w !mzscheme<CR>
 augroup END
 
 augroup filetype_dot
     autocmd!
-    autocmd FileType dot nnoremap <buffer> <localleader>r :!dot -Tpng % >%:r.png && open %:r.png<cr>
-    autocmd FileType dot nnoremap <buffer> <localleader>b :!dot -Tpng % >%:r.png<cr>
+    autocmd FileType dot nnoremap <buffer> <localleader>r :!dot -Tpng % >%:r.png && open %:r.png<CR>
+    autocmd FileType dot nnoremap <buffer> <localleader>b :!dot -Tpng % >%:r.png<CR>
 augroup END
 
 augroup filetype_coffee
     autocmd!
-    autocmd FileType coffee nnoremap <buffer> <localleader>b :!coffee -c %<cr>
-    autocmd FileType coffee nnoremap <buffer> <localleader>r :!coffee %<cr>
+    autocmd FileType coffee nnoremap <buffer> <localleader>b :!coffee -c %<CR>
+    autocmd FileType coffee nnoremap <buffer> <localleader>r :!coffee %<CR>
 augroup END
 
 augroup filetype_sql
     autocmd!
-    autocmd FileType sql nnoremap <buffer> <localleader>r :!mysql <%<cr>
-    autocmd FileType sql vnoremap <buffer> <localleader>r :w !mysql<cr>
+    autocmd FileType sql nnoremap <buffer> <localleader>r :!mysql <%<CR>
+    autocmd FileType sql vnoremap <buffer> <localleader>r :w !mysql<CR>
 augroup END
 
 augroup filetype_markdown
     autocmd!
     autocmd FileType markdown setlocal wrap
     autocmd BufNewFile,BufReadPost *.md,README set filetype=markdown
-    autocmd FileType markdown vnoremap <buffer> <localleader>r :w !python3<cr>
+    autocmd FileType markdown vnoremap <buffer> <localleader>r :w !python3<CR>
 augroup END
 
 augroup filetype_go
@@ -370,15 +425,15 @@ augroup filetype_go
     autocmd FileType go setlocal softtabstop=8
     autocmd FileType go setlocal noexpandtab
     autocmd FileType go setlocal keywordprg=go\ doc
-    autocmd FileType go nnoremap <buffer> <localleader>f :% !gofmt<cr>
-    autocmd FileType go nnoremap <buffer> <localleader>b :make<cr>
-    autocmd FileType go nnoremap <buffer> <localleader>r :!go run %<cr>
+    autocmd FileType go nnoremap <buffer> <localleader>f :% !gofmt<CR>
+    autocmd FileType go nnoremap <buffer> <localleader>b :make<CR>
+    autocmd FileType go nnoremap <buffer> <localleader>r :!go run %<CR>
 augroup END
 
 augroup filetype_java
     autocmd!
-    autocmd FileType java nnoremap <buffer> <localleader>b :!javac -Xlint:all %<cr>
-    autocmd FileType java nnoremap <buffer> <localleader>r :!javac -Xlint:all % && java %:r<cr>
+    autocmd FileType java nnoremap <buffer> <localleader>b :!javac -Xlint:all %<CR>
+    autocmd FileType java nnoremap <buffer> <localleader>r :!javac -Xlint:all % && java %:r<CR>
 augroup END
 
 augroup filetype_vue
@@ -390,8 +445,8 @@ augroup END
 
 augroup filetype_perl
     autocmd!
-    autocmd FileType perl nnoremap <buffer> <localleader>r :!perl %<cr>
-    autocmd FileType perl vnoremap <buffer> <localleader>r :w !perl<cr>
+    autocmd FileType perl nnoremap <buffer> <localleader>r :!perl %<CR>
+    autocmd FileType perl vnoremap <buffer> <localleader>r :w !perl<CR>
 augroup END
 
 augroup filetype_yaml
@@ -403,13 +458,13 @@ augroup END
 
 augroup filetype_lisp
     autocmd!
-    autocmd FileType lisp nnoremap <buffer> <localleader>r :!sbcl --script %<cr>
-    autocmd FileType lisp nnoremap <buffer> <localleader>i :!sbcl<cr>
+    autocmd FileType lisp nnoremap <buffer> <localleader>r :!sbcl --script %<CR>
+    autocmd FileType lisp nnoremap <buffer> <localleader>i :!sbcl<CR>
 augroup END
 
 augroup filetype_haskell
     autocmd!
-    autocmd FileType haskell nnoremap <buffer> <localleader>r :!stack runhaskell %<cr>
-    autocmd FileType haskell nnoremap <buffer> <localleader>i :!stack ghci<cr>
+    autocmd FileType haskell nnoremap <buffer> <localleader>r :!stack runhaskell %<CR>
+    autocmd FileType haskell nnoremap <buffer> <localleader>i :!stack ghci<CR>
 augroup END
 " }}}
