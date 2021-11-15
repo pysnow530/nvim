@@ -312,7 +312,7 @@ endfunction
 function! BshellCurDir() abort
     let cur_dir = ''
     for i in range(line('.'), 1, -1)
-        if getline(i) =~ '^[.~]\?/.*$'
+        if getline(i) =~ '^[.~]\?/.*\$'
             let cur_dir = trim(trim(split(getline(i), '\$')[0]), '/', 2)
             break
         endif
