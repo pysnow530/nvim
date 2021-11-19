@@ -552,4 +552,10 @@ augroup filetype_haskell
     autocmd FileType haskell nnoremap <buffer> <localleader>r :!stack runhaskell %<CR>
     autocmd FileType haskell nnoremap <buffer> <localleader>i :!stack ghci<CR>
 augroup END
+
+augroup filetype_rust
+    autocmd!
+    autocmd FileType rust nnoremap <buffer> <localleader>b :!rustc %<CR>
+    autocmd FileType rust nnoremap <buffer> <localleader>r :!rustc % && ./%:r<CR>
+augroup END
 " }}}
