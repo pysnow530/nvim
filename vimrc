@@ -184,7 +184,7 @@ function! ToggleComment(type='') abort
         return 'g@'
     endif
 
-    let comment_char = get({'vim': '"', 'javascript': '\/\/'}, &ft, '#')
+    let comment_char = get({'vim': '"', 'javascript': '\/\/', 'rust': '\/\/'}, &ft, '#')
 
     let lines = getline("'[", "']")
     let commented = All(lines, {_, v -> v =~ '^\s*' . comment_char . ' '})
@@ -557,5 +557,6 @@ augroup filetype_rust
     autocmd!
     autocmd FileType rust nnoremap <buffer> <localleader>b :!rustc %<CR>
     autocmd FileType rust nnoremap <buffer> <localleader>r :!rustc % && ./%:r<CR>
+    autocmd FileType rust nnoremap <buffer> <localleader>f :!rustfmt %<CR>
 augroup END
 " }}}
