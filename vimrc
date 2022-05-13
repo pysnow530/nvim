@@ -12,7 +12,7 @@ let maplocalleader = '\'
 " }}}
 
 " {{{ config.environ
-let $PATH = '/usr/local/bin:/bin:/usr/bin:/usr/local/bin:/opt/local/bin'
+" let $PATH = '/usr/local/bin:/bin:/usr/bin:/usr/local/bin:/opt/local/bin'
 " }}}
 
 " {{{ config.ui
@@ -111,6 +111,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'cohama/lexima.vim'
 Plug 'vim-scripts/argtextobj.vim'
 Plug 'lifepillar/vim-solarized8'
+Plug 'rust-lang/rust.vim'
 call plug#end()
 
 " emmet-vim
@@ -157,7 +158,6 @@ nnoremap <leader>v :Gstatus<CR>
 
 " solarized8
 colorscheme solarized8
-
 " }}}
 
 function! Map(expr1, expr2) abort
@@ -555,8 +555,9 @@ augroup END
 
 augroup filetype_rust
     autocmd!
+    autocmd FileType rust nnoremap <buffer> <localleader>f :RustFmt<CR>
+    autocmd FileType rust nnoremap <buffer> <localleader>r :RustRun<CR>
+    autocmd FileType rust nnoremap <buffer> <localleader>t :RustTest<CR>
     autocmd FileType rust nnoremap <buffer> <localleader>b :!rustc %<CR>
-    autocmd FileType rust nnoremap <buffer> <localleader>r :!rustc % && ./%:r<CR>
-    autocmd FileType rust nnoremap <buffer> <localleader>f :!rustfmt %<CR>
 augroup END
 " }}}
