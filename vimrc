@@ -114,6 +114,7 @@ Plug 'vim-scripts/argtextobj.vim'
 Plug 'lifepillar/vim-solarized8'
 Plug 'rust-lang/rust.vim'
 Plug 'ryanoasis/vim-devicons'
+Plug 'mhinz/vim-startify'
 call plug#end()
 
 " emmet-vim
@@ -160,6 +161,11 @@ nnoremap <leader>v :Gstatus<CR>
 
 " solarized8
 colorscheme solarized8
+
+" vim-startify
+function! StartifyEntryFormat()
+    return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
+endfunction
 " }}}
 
 function! Map(expr1, expr2) abort
