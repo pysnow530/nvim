@@ -29,6 +29,7 @@ set foldtext=getline(v:foldstart)
 set foldlevel=99  " don't fold on opened
 
 set termguicolors
+set guifont=SauceCodeProNerdFontCompleteM-Regular:h11
 set background=dark
 
 " set cursorline
@@ -112,6 +113,7 @@ Plug 'cohama/lexima.vim'
 Plug 'vim-scripts/argtextobj.vim'
 Plug 'lifepillar/vim-solarized8'
 Plug 'rust-lang/rust.vim'
+Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
 " emmet-vim
