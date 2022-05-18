@@ -29,7 +29,7 @@ set foldtext=getline(v:foldstart)
 set foldlevel=99  " don't fold on opened
 
 set termguicolors
-set guifont=SauceCodeProNerdFontCompleteM-Regular:h11
+set guifont=SauceCodeProNerdFontCompleteM-Regular:h11,SauceCodeProNerdFontComplete-Regular:h11,*
 set background=dark
 
 " set cursorline
