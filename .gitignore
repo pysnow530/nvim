@@ -2,5 +2,6 @@
 .netrwhist
 
 __pycache__
-.idea/
-.venv/
+/.idea/
+/.venv/
+/files/

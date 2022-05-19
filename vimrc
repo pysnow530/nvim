@@ -115,7 +115,11 @@ Plug 'lifepillar/vim-solarized8'
 Plug 'rust-lang/rust.vim'
 
 " file management
+set viminfo='100,n$HOME/.vim/files/info/viminfo
+let g:startify_bookmarks = ['~/projs/vsops2-fe/ticket/', '~/projs/vsops.woa.com/']
 Plug 'mhinz/vim-startify'
+
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
 Plug 'ctrlpvim/ctrlp.vim'
 
 Plug 'ryanoasis/vim-devicons'
