@@ -115,6 +115,9 @@ Plug 'lifepillar/vim-solarized8'
 Plug 'rust-lang/rust.vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'mhinz/vim-startify'
+
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 call plug#end()
 
 " emmet-vim
@@ -294,13 +297,13 @@ endfunction
 
 " {{{ buffershell
 " buffer shell:
-" 
+"
 " command format(insert mode, <C-CR>):
 "     /tmp $ ls | grep hello.vim
 "     ~/projs $ ls | grep hello.vim
 "     ./plugins $ ls | grep hello.vim
 "     ls | grep hello.vim  # use last directory
-" 
+"
 " open file or cd directory (normal mode, <C-CR>):
 "     hello.vim
 "     plugins
