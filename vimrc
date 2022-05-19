@@ -113,8 +113,12 @@ Plug 'cohama/lexima.vim'
 Plug 'vim-scripts/argtextobj.vim'
 Plug 'lifepillar/vim-solarized8'
 Plug 'rust-lang/rust.vim'
-Plug 'ryanoasis/vim-devicons'
+
+" file management
 Plug 'mhinz/vim-startify'
+Plug 'ctrlpvim/ctrlp.vim'
+
+Plug 'ryanoasis/vim-devicons'
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
