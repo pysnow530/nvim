@@ -128,6 +128,14 @@ Plug 'vim-airline/vim-airline-themes'
 
 " set updatetime=500
 " Plug 'obxhdx/vim-auto-highlight'  " this makes vim slow, refactor parallel
+
+Plug 'habamax/vim-sendtoterm'
+xmap <leader>r  <Plug>(SendToTerm)
+nmap <leader>r  <Plug>(SendToTerm)
+omap <leader>r  <Plug>(SendToTerm)
+nmap <leader>rr <Plug>(SendToTermLine)
+nmap <C-CR> <Plug>(SendToTermLine)
+
 call plug#end()
 
 " emmet-vim
@@ -302,91 +310,6 @@ function! Resurround() abort
     execute "normal! m'"
     call winrestview(b:last_winview)
     execute "normal! \<c-o>"
-endfunction
-" }}}
-
-" {{{ buffershell
-" buffer shell:
-"
-" command format(insert mode, <C-CR>):
-"     /tmp $ ls | grep hello.vim
-"     ~/projs $ ls | grep hello.vim
-"     ./plugins $ ls | grep hello.vim
-"     ls | grep hello.vim  # use last directory
-"
-" open file or cd directory (normal mode, <C-CR>):
-"     hello.vim
-"     plugins
-"     plugins/
-inoremap <C-CR> <Esc>:call BshellCmd()<CR>
-nnoremap <C-CR> :call BshellOpen()<CR>
-
-function! BshellFixCol() abort
-    if col('.') == col('$') - 1
-        startinsert!
-    else
-        execute 'normal! l'
-        startinsert
-    endif
-endfunction
-
-function! BshellCurDir() abort
-    let cur_dir = ''
-    for i in range(line('.'), 1, -1)
-        if getline(i) =~ '^[.~]\?/.*\$'
-            let cur_dir = trim(trim(split(getline(i), '\$')[0]), '/', 2)
-            break
-        endif
-    endfor
-    if cur_dir == ''
-        echoerr 'No current directory found!'
-        return
-    endif
-    return cur_dir
-endfunction
-
-function! BshellCurCmd() abort
-    if getline('.') =~ '^[.~]\?/.*$'
-        let cur_cmd = join(split(getline('.'), '\$')[1:], '$')
-        let with_prompt = 1
-    else
-        let cur_cmd = getline('.')
-        let with_prompt = 0
-    endif
-    return [cur_cmd, with_prompt]
-endfunction
-
-function! BshellCmd() abort
-    call BshellFixCol()
-
-    let cur_dir = BshellCurDir()
-    let [cur_cmd, with_prompt] = BshellCurCmd()
-
-    let cmd = printf('cd %s && (%s)', cur_dir, cur_cmd)
-    let outputs = systemlist(cmd)
-    if with_prompt
-        let result = outputs + [printf('%s $ ', cur_dir)]
-    else
-        let result = [printf('%s $ %s', cur_dir, cur_cmd)] + outputs + [printf('%s $ ', cur_dir)]
-    endif
-    call append('$', result)
-    call cursor('$', 0)
-    startinsert!
-endfunction
-
-function! BshellOpen() abort
-    let cword = expand('<cWORD>')
-    let cur_dir = BshellCurDir()
-    let abspath = expand(cur_dir)
-    let path = abspath . '/' . cword
-    if isdirectory(path)
-        " TODO: fix /tmp/.. directory
-        call append('$', [printf('%s $ ', cur_dir . '/' . cword)])
-        call cursor('$', 0)
-        startinsert!
-    else
-        execute printf('split %s', path)
-    endif
 endfunction
 " }}}
 
