@@ -31,7 +31,6 @@ set foldlevel=99  " don't fold on opened
 set termguicolors
 set guifont=SauceCodeProNerdFontCompleteM-Regular:h11,SauceCodeProNerdFontComplete-Regular:h11,*
 set background=dark
-set updatetime=500
 
 " set cursorline
 if exists('+colorcolumn') | set colorcolumn=100 | endif
@@ -127,7 +126,8 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-Plug 'obxhdx/vim-auto-highlight'
+" set updatetime=500
+" Plug 'obxhdx/vim-auto-highlight'  " this makes vim slow, refactor parallel
 call plug#end()
 
 " emmet-vim
