@@ -16,6 +16,7 @@ let maplocalleader = '\'
 " }}}
 
 " {{{ config.ui
+" https://github.com/ryanoasis/vim-devicons/issues/398
 " syntax on  " this will effect nerdtree weired(icon with [])
 set history=50
 set showcmd
@@ -127,6 +128,7 @@ let g:ctrlp_custom_ignore = 'node_modules\|DS_Store'
 Plug 'ctrlpvim/ctrlp.vim'
 
 Plug 'ryanoasis/vim-devicons'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
