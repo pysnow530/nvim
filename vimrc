@@ -16,7 +16,7 @@ let maplocalleader = '\'
 " }}}
 
 " {{{ config.ui
-syntax on
+" syntax on  " this will effect nerdtree weired(icon with [])
 set history=50
 set showcmd
 set hlsearch
