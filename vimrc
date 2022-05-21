@@ -105,7 +105,7 @@ call plug#begin()
 Plug 'hynek/vim-python-pep8-indent'  " neovim also has indent problem
 Plug 'mattn/emmet-vim'
 Plug 'airblade/vim-gitgutter'
-Plug 'scrooloose/nerdtree'
+
 Plug 'majutsushi/tagbar'
 Plug 'lvht/tagbar-markdown'
 Plug 'tpope/vim-fugitive'
@@ -115,8 +115,13 @@ Plug 'lifepillar/vim-solarized8'
 Plug 'rust-lang/rust.vim'
 
 " file management
+call mkdir($HOME . "/.vim/files/info/", "p")
 set viminfo='100,n$HOME/.vim/files/info/viminfo
 Plug 'mhinz/vim-startify'
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+let g:NERDTreeQuitOnOpen = 0
+nnoremap <leader>f :NERDTreeToggle<CR>
+let NERDTreeIgnore = ['\~$', '\.class$', '\.pyc$']
 
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store'
 Plug 'ctrlpvim/ctrlp.vim'
@@ -140,11 +145,6 @@ call plug#end()
 
 " emmet-vim
 let g:user_emmet_leader_key = '<leader>e'
-
-" nerdtree
-let g:NERDTreeQuitOnOpen = 0
-nnoremap <leader>n :NERDTreeToggle<CR>
-let NERDTreeIgnore = ['\~$', '\.class$', '\.pyc$']
 
 " tagbar
 let g:tagbar_type_go = {
