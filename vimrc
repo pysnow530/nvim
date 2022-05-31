@@ -143,6 +143,10 @@ omap <leader>r  <Plug>(SendToTerm)
 nmap <leader>rr <Plug>(SendToTermLine)
 nmap <C-CR> <Plug>(SendToTermLine)
 
+Plug 'godlygeek/tabular'
+
+Plug 'terryma/vim-multiple-cursors'
+
 call plug#end()
 
 " emmet-vim
