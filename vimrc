@@ -145,7 +145,10 @@ nmap <C-CR> <Plug>(SendToTermLine)
 
 Plug 'godlygeek/tabular'
 
-Plug 'terryma/vim-multiple-cursors'
+" Plug 'terryma/vim-multiple-cursors'  " deprecated
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+
+Plug 'preservim/vim-markdown'
 
 call plug#end()
 
@@ -509,5 +512,10 @@ augroup filetype_rust
     autocmd FileType rust nnoremap <buffer> <localleader>r :RustRun<CR>
     autocmd FileType rust nnoremap <buffer> <localleader>t :RustTest<CR>
     autocmd FileType rust nnoremap <buffer> <localleader>b :!rustc %<CR>
+augroup END
+
+augroup filetype_asciidoc
+    autocmd!
+    autocmd FileType asciidoc nnoremap <buffer> <localleader>r :!asciidoctor -n -o /tmp/tmp.html % && open /tmp/tmp.html<CR>
 augroup END
 " }}}
