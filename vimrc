@@ -187,7 +187,7 @@ let g:tagbar_autofocus = 1
 nnoremap <leader>t :TagbarToggle<CR>
 
 " vim-fugitive
-nnoremap <leader>v :Gstatus<CR>
+nnoremap <leader>v :Git<CR>
 
 " solarized8
 colorscheme solarized8
