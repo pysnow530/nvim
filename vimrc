@@ -150,6 +150,8 @@ Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 
 Plug 'preservim/vim-markdown'
 
+Plug 'tpope/vim-surround'
+
 call plug#end()
 
 " emmet-vim
@@ -235,90 +237,6 @@ function! ToggleComment(type='') abort
         let nr_spaces = min(map(lines, {_, v -> strwidth(matchstr(v, '^\s*'))}))
         execute "'[,']" 's/^\(\s\{' . nr_spaces . '\}\)/\1' . comment_char . ' '
     endif
-endfunction
-" }}}
-
-" {{{ surrounder
-nnoremap <silent> ys :let b:last_winview = winsaveview() <Bar> set opfunc=Surround<CR>g@
-nnoremap ds :let b:last_winview = winsaveview() <Bar> call Unsurround()<CR>
-nnoremap cs :let b:last_winview = winsaveview() <Bar> call Resurround()<CR>
-
-function! Surround(type) abort
-    let right_char = nr2char(getchar())
-    let left_char = get({')': '(', ']': '[', '}': '{'}, right_char, right_char)
-
-    let [_, left_lnum, left_col, left_offset] = getpos("'[")
-    let [_, right_lnum, right_col, right_offset] = getpos("']")
-
-    if a:type == 'char'
-        call cursor(right_lnum, right_col, right_offset)
-        execute 'normal! a' . right_char
-        call cursor(left_lnum, left_col, left_offset)
-        execute 'normal! i' . left_char
-    else  " line
-        call append(right_lnum, right_char)
-        call append(left_lnum - 1, left_char)
-    endif
-
-    " fix window view
-    if a:type == 'line'
-        let b:last_winview['topline'] += 1
-    endif
-    call winrestview(b:last_winview)
-
-    if a:type == 'char'
-        call setpos('.', [0, b:last_winview['lnum'], b:last_winview['col'] + 2, 0])
-    else
-        call setpos('.', [0, b:last_winview['lnum'] + 1, b:last_winview['col'] + 1, 0])
-    endif
-endfunction
-
-function! Unsurround() abort
-    let right_char = nr2char(getchar())
-    let left_char = get({')': '(', ']': '[', '}': '{'}, right_char, right_char)
-
-    execute "normal! m'"
-    call search(right_char)
-    execute trim(getline('.')) == right_char ? "normal! dd" : "normal! x"
-    execute "normal! \<c-o>"
-
-    execute "normal! m'"
-    call search(left_char, 'b')
-    let linewise = trim(getline('.')) == left_char
-    execute trim(getline('.')) == left_char ? "normal! dd" : "normal! x"
-    execute "normal! \<c-o>"
-
-    " fix window view
-    execute "normal! m'"
-    if linewise
-        let b:last_winview['topline'] -= 1
-    endif
-    call winrestview(b:last_winview)
-    execute "normal! \<c-o>h"
-endfunction
-
-function! Resurround() abort
-    let right_char = nr2char(getchar())
-    let left_char = get({')': '(', ']': '[', '}': '{'}, right_char, right_char)
-
-    let new_right_char = nr2char(getchar())
-    let new_left_char = get({')': '(', ']': '[', '}': '{'}, new_right_char, new_right_char)
-
-    execute "normal! m'"
-    call search(right_char)
-    execute "normal! r" . new_right_char
-    execute "normal! \<c-o>"
-
-    execute "normal! m'"
-    call search(left_char, 'b')
-    let linewise = trim(getline('.')) == left_char
-    execute "normal! r" . new_left_char
-    execute "normal! \<c-o>"
-
-    " fix window view
-    execute "normal! m'"
-    call winrestview(b:last_winview)
-    execute "normal! \<c-o>"
 endfunction
 " }}}
 
