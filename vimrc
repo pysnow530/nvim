@@ -109,7 +109,7 @@ Plug 'airblade/vim-gitgutter'
 
 Plug 'majutsushi/tagbar'
 Plug 'lvht/tagbar-markdown'
-Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive', { 'tag': 'v3.7' }
 Plug 'cohama/lexima.vim'
 Plug 'vim-scripts/argtextobj.vim'
 Plug 'lifepillar/vim-solarized8'
@@ -132,6 +132,9 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'powerline/fonts', { 'do': './install.sh' }
+
+let g:airline_powerline_fonts = 1
 
 " set updatetime=500
 " Plug 'obxhdx/vim-auto-highlight'  " this makes vim slow, refactor parallel
@@ -151,6 +154,8 @@ Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'preservim/vim-markdown'
 
 Plug 'tpope/vim-surround'
+
+Plug 'dhruvasagar/vim-table-mode'
 
 call plug#end()
 
@@ -193,6 +198,10 @@ nnoremap <leader>v :Git<CR>
 
 " solarized8
 colorscheme solarized8
+
+set fillchars+=vert:\│
+hi VertSplit guifg=Black guibg=NONE
+set guioptions=egm
 
 " vim-startify
 function! StartifyEntryFormat()
