@@ -157,6 +157,9 @@ Plug 'tpope/vim-surround'
 
 Plug 'dhruvasagar/vim-table-mode'
 
+Plug 'dense-analysis/ale'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 call plug#end()
 
 " emmet-vim
