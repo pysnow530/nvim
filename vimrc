@@ -149,7 +149,7 @@ nmap <C-CR> <Plug>(SendToTermLine)
 Plug 'godlygeek/tabular'
 
 " Plug 'terryma/vim-multiple-cursors'  " deprecated
-Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+" Plug 'mg979/vim-visual-multi', {'branch': 'master'}  " need vim8+
 
 Plug 'preservim/vim-markdown'
 
