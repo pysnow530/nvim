@@ -160,6 +160,8 @@ Plug 'dhruvasagar/vim-table-mode'
 Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
+Plug 'tpope/vim-commentary'
+
 call plug#end()
 
 " emmet-vim
@@ -224,33 +226,6 @@ function! All(expr1, expr2) abort
     endfor
     return result
 endfunction
-
-" {{{ commenter
-nnoremap <expr> gc ToggleComment()
-xnoremap <expr> gc ToggleComment()
-nnoremap <expr> gcc ToggleComment() . '_'
-
-function! ToggleComment(type='') abort
-    if a:type == ''
-        set opfunc=ToggleComment
-        return 'g@'
-    endif
-
-    let comment_char = get({'vim': '"', 'javascript': '\/\/', 'rust': '\/\/'}, &ft, '#')
-
-    let lines = getline("'[", "']")
-    let commented = All(lines, {_, v -> v =~ '^\s*' . comment_char . ' '})
-
-    " TODO: keep cursor position
-    " TODO: compatible vim7
-    if commented
-        execute "'[,']" 's/\(\s*\)' . comment_char . ' /\1'
-    else
-        let nr_spaces = min(map(lines, {_, v -> strwidth(matchstr(v, '^\s*'))}))
-        execute "'[,']" 's/^\(\s\{' . nr_spaces . '\}\)/\1' . comment_char . ' '
-    endif
-endfunction
-" }}}
 
 " {{{ plugins.sneak
 fun! Sneak()
