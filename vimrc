@@ -157,8 +157,8 @@ Plug 'tpope/vim-surround'
 
 Plug 'dhruvasagar/vim-table-mode'
 
-Plug 'dense-analysis/ale'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'dense-analysis/ale'
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'tpope/vim-commentary'
 
