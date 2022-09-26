@@ -58,7 +58,10 @@ endf
 nnoremap <S-TAB> :call ToggleAllFolds()<CR>
 nnoremap <SPACE> za  " remap <TAB> will cause <CTRL-i> remapped
 nnoremap <leader>+ vipyvipJPvip<C-c>:s/\s\+/+/g<cr>V:!bc<Cr> " sum paragraph number
-nnoremap <leader>- vipyvipJPvip<C-c>:s/\s\+/-/g<cr>V:!bc<Cr> " sum paragraph number
+nnoremap <leader>- vipyvipJPvip<C-c>:s/\s\+/-/g<cr>V:!bc<Cr> " sub paragraph number
+nnoremap <leader>1 vip:!awk '{print $1}'<Cr> " col 1 paragraph number
+nnoremap <leader>2 vip:!awk '{print $2}'<Cr> " col 1 paragraph number
+nnoremap <leader>3 vip:!awk '{print $3}'<Cr> " col 1 paragraph number
 " }}}
 
 " {{{ config.edit
