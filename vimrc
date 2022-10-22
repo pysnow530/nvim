@@ -127,14 +127,18 @@ nmap <C-CR> <Plug>(SendToTermLine)
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 
+Plug 'lifepillar/vim-solarized8'
+
 call plug#end()
 
 " emmet-vim
 let g:user_emmet_leader_key = '<leader>e'
 
-
 set fillchars+=vert:\│
 set guioptions=egm
+
+" solarized8
+colorscheme solarized8
 " }}}
 
 " {{{ config.filetypes
