@@ -17,7 +17,7 @@ let maplocalleader = '\'
 
 " {{{ config.ui
 " https://github.com/ryanoasis/vim-devicons/issues/398
-" syntax on  " this will effect nerdtree weired(icon with [])
+syntax on
 set history=50
 set showcmd
 set hlsearch
@@ -30,7 +30,7 @@ set foldtext=getline(v:foldstart)
 set foldlevel=99  " don't fold on opened
 
 set termguicolors
-set guifont=SauceCodeProNerdFontCompleteM-Regular:h11,SauceCodeProNerdFontComplete-Regular:h11,*
+" set guifont=SauceCodeProNerdFontCompleteM-Regular:h11,SauceCodeProNerdFontComplete-Regular:h11,*
 set background=dark
 
 " set cursorline
@@ -57,11 +57,6 @@ fun! ToggleAllFolds() abort
 endf
 nnoremap <S-TAB> :call ToggleAllFolds()<CR>
 nnoremap <SPACE> za  " remap <TAB> will cause <CTRL-i> remapped
-nnoremap <leader>+ vipyvipJPvip<C-c>:s/\s\+/+/g<cr>V:!bc<Cr> " sum paragraph number
-nnoremap <leader>- vipyvipJPvip<C-c>:s/\s\+/-/g<cr>V:!bc<Cr> " sub paragraph number
-nnoremap <leader>1 vip:!awk '{print $1}'<Cr> " col 1 paragraph number
-nnoremap <leader>2 vip:!awk '{print $2}'<Cr> " col 1 paragraph number
-nnoremap <leader>3 vip:!awk '{print $3}'<Cr> " col 1 paragraph number
 " }}}
 
 " {{{ config.edit
@@ -79,6 +74,8 @@ set sessionoptions+=unix,slash
 " set lazyredraw
 set undofile
 set noswapfile
+
+colorscheme evening
 
 set mouse=a
 
@@ -101,7 +98,6 @@ nnoremap <leader>k :q<CR>
 nnoremap <leader>j :w<CR>
 
 nnoremap <leader>s :e ~/.vim/vimrc<CR>
-nnoremap <leader>w :set invwrap<CR>
 " }}}
 
 " {{{ plugins.global
@@ -109,40 +105,17 @@ filetype off
 
 call plug#begin()
 Plug 'hynek/vim-python-pep8-indent'  " neovim also has indent problem
-Plug 'mattn/emmet-vim'
 Plug 'airblade/vim-gitgutter'
-
-Plug 'majutsushi/tagbar'
 Plug 'lvht/tagbar-markdown'
 Plug 'tpope/vim-fugitive', { 'tag': 'v3.7' }
 Plug 'cohama/lexima.vim'
 Plug 'vim-scripts/argtextobj.vim'
-Plug 'lifepillar/vim-solarized8'
-Plug 'rust-lang/rust.vim'
 
 " file management
-call mkdir($HOME . "/.vim/files/info/", "p")
-set viminfo='100,n$HOME/.vim/files/info/viminfo
-Plug 'mhinz/vim-startify'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 let g:NERDTreeQuitOnOpen = 0
 nnoremap <leader>f :NERDTreeToggle<CR>
-let NERDTreeIgnore = ['\~$', '\.class$', '\.pyc$']
-
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store'
-Plug 'ctrlpvim/ctrlp.vim'
-
-Plug 'ryanoasis/vim-devicons'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'powerline/fonts', { 'do': './install.sh' }
-
-let g:airline_powerline_fonts = 1
-
-" set updatetime=500
-" Plug 'obxhdx/vim-auto-highlight'  " this makes vim slow, refactor parallel
+let NERDTreeIgnore = ['\~$', '\.pyc$']
 
 Plug 'habamax/vim-sendtoterm'
 xmap <leader>r  <Plug>(SendToTerm)
@@ -151,20 +124,7 @@ omap <leader>r  <Plug>(SendToTerm)
 nmap <leader>rr <Plug>(SendToTermLine)
 nmap <C-CR> <Plug>(SendToTermLine)
 
-Plug 'godlygeek/tabular'
-
-" Plug 'terryma/vim-multiple-cursors'  " deprecated
-" Plug 'mg979/vim-visual-multi', {'branch': 'master'}  " need vim8+
-
-Plug 'preservim/vim-markdown'
-
 Plug 'tpope/vim-surround'
-
-Plug 'dhruvasagar/vim-table-mode'
-
-" Plug 'dense-analysis/ale'
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
 Plug 'tpope/vim-commentary'
 
 call plug#end()
@@ -172,74 +132,9 @@ call plug#end()
 " emmet-vim
 let g:user_emmet_leader_key = '<leader>e'
 
-" tagbar
-let g:tagbar_type_go = {
-    \ 'ctagstype' : 'go',
-    \ 'kinds'     : [
-        \ 'p:package',
-        \ 'i:imports:1',
-        \ 'c:constants',
-        \ 'v:variables',
-        \ 't:types',
-        \ 'n:interfaces',
-        \ 'w:fields',
-        \ 'e:embedded',
-        \ 'm:methods',
-        \ 'r:constructor',
-        \ 'f:functions'
-    \ ],
-    \ 'sro' : '.',
-    \ 'kind2scope' : {
-        \ 't' : 'ctype',
-        \ 'n' : 'ntype'
-    \ },
-    \ 'scope2kind' : {
-        \ 'ctype' : 't',
-        \ 'ntype' : 'n'
-    \ },
-    \ 'ctagsbin'  : 'gotags',
-    \ 'ctagsargs' : '-sort -silent'
-\ }
-let g:tagbar_autofocus = 1
-nnoremap <leader>t :TagbarToggle<CR>
-
-" vim-fugitive
-nnoremap <leader>v :Git<CR>
-
-" solarized8
-colorscheme solarized8
 
 set fillchars+=vert:\│
-hi VertSplit guifg=Black guibg=NONE
 set guioptions=egm
-
-" vim-startify
-function! StartifyEntryFormat()
-    return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
-endfunction
-" }}}
-
-function! Map(expr1, expr2) abort
-    return map(deepcopy(a:expr1), a:expr2)
-endfunction
-
-function! All(expr1, expr2) abort
-    let result_list = Map(a:expr1, a:expr2)
-    let result = 1
-    for i in result_list
-        let result = result && i
-    endfor
-    return result
-endfunction
-
-" {{{ plugins.sneak
-fun! Sneak()
-    let search = nr2char(getchar()) . nr2char(getchar())
-    let @/ = search
-    execute 'normal! n'
-endfun
-
-nnoremap s :call Sneak()<CR>
 " }}}
 
 " {{{ config.filetypes
@@ -329,41 +224,17 @@ augroup filetype_lua
     autocmd FileType lua nnoremap <buffer> <localleader>i :!lua<CR>
 augroup END
 
-augroup filetype_cs
-    autocmd!
-    autocmd FileType cs nnoremap <buffer> <localleader>b :!csc.exe /out:%:r.exe %<CR>
-    autocmd FileType cs nnoremap <buffer> <localleader>r :!%:r.exe<CR>
-augroup END
-
-augroup filetype_scheme
-    autocmd!
-    autocmd FileType scheme nnoremap <buffer> <localleader>r :!mzscheme %<CR>
-    autocmd FileType scheme vnoremap <buffer> <localleader>r :w !mzscheme<CR>
-augroup END
-
 augroup filetype_dot
     autocmd!
     autocmd FileType dot nnoremap <buffer> <localleader>r :!dot -Tpng % >%:r.png && open %:r.png<CR>
     autocmd FileType dot nnoremap <buffer> <localleader>b :!dot -Tpng % >%:r.png<CR>
 augroup END
 
-augroup filetype_coffee
-    autocmd!
-    autocmd FileType coffee nnoremap <buffer> <localleader>b :!coffee -c %<CR>
-    autocmd FileType coffee nnoremap <buffer> <localleader>r :!coffee %<CR>
-augroup END
-
-augroup filetype_sql
-    autocmd!
-    autocmd FileType sql nnoremap <buffer> <localleader>r :!mysql <%<CR>
-    autocmd FileType sql vnoremap <buffer> <localleader>r :w !mysql<CR>
-augroup END
-
 augroup filetype_markdown
     autocmd!
     autocmd FileType markdown setlocal wrap
     autocmd BufNewFile,BufReadPost *.md,README set filetype=markdown
-    autocmd FileType markdown vnoremap <buffer> <localleader>r :w !python3<CR>
+    autocmd FileType markdown vnoremap <buffer> <localleader>r :w !sh<CR>
 augroup END
 
 augroup filetype_go
@@ -391,23 +262,11 @@ augroup filetype_vue
     autocmd FileType vue set shiftwidth=2
 augroup END
 
-augroup filetype_perl
-    autocmd!
-    autocmd FileType perl nnoremap <buffer> <localleader>r :!perl %<CR>
-    autocmd FileType perl vnoremap <buffer> <localleader>r :w !perl<CR>
-augroup END
-
 augroup filetype_yaml
     autocmd!
     autocmd FileType yaml setlocal tabstop=2
     autocmd FileType yaml setlocal softtabstop=2
     autocmd FileType yaml setlocal shiftwidth=2
-augroup END
-
-augroup filetype_lisp
-    autocmd!
-    autocmd FileType lisp nnoremap <buffer> <localleader>r :!sbcl --script %<CR>
-    autocmd FileType lisp nnoremap <buffer> <localleader>i :!sbcl<CR>
 augroup END
 
 augroup filetype_haskell
@@ -422,10 +281,5 @@ augroup filetype_rust
     autocmd FileType rust nnoremap <buffer> <localleader>r :RustRun<CR>
     autocmd FileType rust nnoremap <buffer> <localleader>t :RustTest<CR>
     autocmd FileType rust nnoremap <buffer> <localleader>b :!rustc %<CR>
-augroup END
-
-augroup filetype_asciidoc
-    autocmd!
-    autocmd FileType asciidoc nnoremap <buffer> <localleader>r :!asciidoctor -n -o /tmp/tmp.html % && open /tmp/tmp.html<CR>
 augroup END
 " }}}
