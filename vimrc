@@ -280,23 +280,25 @@ augroup filetype_haskell
 augroup END
 
 function! RustScript()
-    let lines = getline('^', '$')
+    call system('rm -f ' . expand('%:t:r') . ' ' . expand('__%:t'))
+
+    echom '__' . expand('%:t')
+
     let has_fn_main = 0
+    let lines = getline('^', '$')
     for line in lines
-        if line =~ '.*fn\s+main.*'
+        if line =~ 'fn\s\+main'
             let has_fn_main = 1
             break
         endif
     endfor
     if has_fn_main == 0
         let lines = ['fn main() {'] + lines + ['}']
+        call writefile(lines, '__' . expand('%:t'))
+        execute '!rustc -o %:t:r __%:t && ./%:t:r'
+    else
+        execute '!rustc % && ./%:t:r'
     endif
-    let tmp_path = expand('%:h') . '/expand_rust_' . expand('%:t')
-    let out_path = expand('%:r')
-    call writefile(lines, tmp_path)
-    call system('rustc -o ' . out_path . ' ' . tmp_path)
-    exec ':!./' . out_path
-    "call system('rm ' . tmp_path . ' ' . out_path)
 endfunction
 
 augroup filetype_rust
