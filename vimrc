@@ -279,10 +279,30 @@ augroup filetype_haskell
     autocmd FileType haskell nnoremap <buffer> <localleader>i :!stack ghci<CR>
 augroup END
 
+function! RustScript()
+    let lines = getline('^', '$')
+    let has_fn_main = 0
+    for line in lines
+        if line =~ '.*fn\s+main.*'
+            let has_fn_main = 1
+            break
+        endif
+    endfor
+    if has_fn_main == 0
+        let lines = ['fn main() {'] + lines + ['}']
+    endif
+    let tmp_path = expand('%:h') . '/expand_rust_' . expand('%:t')
+    let out_path = expand('%:r')
+    call writefile(lines, tmp_path)
+    call system('rustc -o ' . out_path . ' ' . tmp_path)
+    exec ':!./' . out_path
+    "call system('rm ' . tmp_path . ' ' . out_path)
+endfunction
+
 augroup filetype_rust
     autocmd!
     autocmd FileType rust nnoremap <buffer> <localleader>f :RustFmt<CR>
-    autocmd FileType rust nnoremap <buffer> <localleader>r :RustRun<CR>
+    autocmd FileType rust nnoremap <buffer> <localleader>r :call RustScript()<CR>
     autocmd FileType rust nnoremap <buffer> <localleader>t :RustTest<CR>
     autocmd FileType rust nnoremap <buffer> <localleader>b :!rustc %<CR>
 augroup END
