@@ -279,10 +279,8 @@ augroup filetype_haskell
     autocmd FileType haskell nnoremap <buffer> <localleader>i :!stack ghci<CR>
 augroup END
 
-function! RustScript()
+function! GenerateRustScript()
     call system('rm -f ' . expand('%:t:r') . ' ' . expand('__%:t'))
-
-    echom '__' . expand('%:t')
 
     let has_fn_main = 0
     let lines = getline('^', '$')
@@ -293,19 +291,38 @@ function! RustScript()
         endif
     endfor
     if has_fn_main == 0
+        let expand_file = '__' . expand('%:t')
         let lines = ['fn main() {'] + lines + ['}']
-        call writefile(lines, '__' . expand('%:t'))
-        execute '!rustc -o %:t:r __%:t && ./%:t:r'
+        call writefile(lines, expand_file)
+        return expand_file
     else
+        return expand('%')
+    endif
+endfunction
+
+function! RunRustScript()
+    let script_file = GenerateRustScript()
+    if script_file == expand('%')
         execute '!rustc % && ./%:t:r'
+    else
+        execute '!rustc -o %:t:r __%:t && ./%:t:r'
+    endif
+endfunction
+
+function! BuildRustScript()
+    let script_file = GenerateRustScript()
+    if script_file == expand('%')
+        execute '!rustc -o %:t:r.mac % && rustc --target x86_64-unknown-linux-musl --codegen linker=/usr/local/bin/x86_64-linux-musl-gcc -o %:t:r.linux %'
+    else
+        execute '!rustc -o %:t:r.mac __%:t && rustc --target x86_64-unknown-linux-musl --codegen linker=/usr/local/bin/x86_64-linux-musl-gcc -o %:t:r.linux __%:t'
     endif
 endfunction
 
 augroup filetype_rust
     autocmd!
     autocmd FileType rust nnoremap <buffer> <localleader>f :RustFmt<CR>
-    autocmd FileType rust nnoremap <buffer> <localleader>r :call RustScript()<CR>
+    autocmd FileType rust nnoremap <buffer> <localleader>r :call RunRustScript()<CR>
     autocmd FileType rust nnoremap <buffer> <localleader>t :RustTest<CR>
-    autocmd FileType rust nnoremap <buffer> <localleader>b :!rustc %<CR>
+    autocmd FileType rust nnoremap <buffer> <localleader>b :call BuildRustScript()<CR>
 augroup END
 " }}}
