@@ -324,5 +324,7 @@ augroup filetype_rust
     autocmd FileType rust nnoremap <buffer> <localleader>r :call RunRustScript()<CR>
     autocmd FileType rust nnoremap <buffer> <localleader>t :RustTest<CR>
     autocmd FileType rust nnoremap <buffer> <localleader>b :call BuildRustScript()<CR>
+    command! -nargs=1 Rustdoc !open https://doc.rust-lang.org/std/index.html?search=<args>
+    autocmd FileType rust setlocal keywordprg=:Rustdoc
 augroup END
 " }}}
