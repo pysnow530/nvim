@@ -327,4 +327,9 @@ augroup filetype_rust
     command! -nargs=1 Rustdoc !open https://doc.rust-lang.org/std/index.html?search=<args>
     autocmd FileType rust setlocal keywordprg=:Rustdoc
 augroup END
+
+augroup filetype_j
+    autocmd!
+    autocmd FileType j nnoremap <buffer> <localleader>r :!jconsole %<CR>
+augroup END
 " }}}
