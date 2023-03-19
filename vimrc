@@ -133,6 +133,9 @@ Plug 'tpope/vim-commentary'
 
 Plug 'lifepillar/vim-solarized8'
 
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
 call plug#end()
 
 " emmet-vim
