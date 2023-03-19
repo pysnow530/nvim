@@ -75,7 +75,7 @@ set sessionoptions+=unix,slash
 set undofile
 set noswapfile
 
-colorscheme evening
+let g:neovide_cursor_vfx_mode = "pixiedust"
 
 set mouse=a
 
