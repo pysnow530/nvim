@@ -136,6 +136,8 @@ Plug 'lifepillar/vim-solarized8'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
+Plug 'kien/ctrlp.vim'
+
 call plug#end()
 
 " emmet-vim
