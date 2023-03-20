@@ -141,6 +141,8 @@ Plug 'vim-airline/vim-airline-themes'
 
 Plug 'kien/ctrlp.vim'
 
+Plug 'chrisbra/NrrwRgn'
+
 call plug#end()
 
 " emmet-vim
