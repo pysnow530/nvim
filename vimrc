@@ -213,9 +213,9 @@ augroup filetype_python
     autocmd!
     autocmd FileType python setlocal fdm=indent
     autocmd FileType python nnoremap <buffer> <localleader>r :!python3 %<CR>
-    autocmd FileType python vnoremap <buffer> <localleader>r :w !python3<CR>
+    " TODO: refactor command line output strategy
+    autocmd FileType python vnoremap <buffer> <localleader>r :w !python3 >/tmp/vim-python.out && cat /tmp/vim-python.out<CR>
     autocmd FileType python nnoremap <buffer> <localleader>i :!python3<CR>
-    autocmd FileType python iabbrev <buffer> im import
     autocmd FileType python iabbrev <buffer> ifmain if __name__ == '__main__'
 augroup END
 
