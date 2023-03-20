@@ -66,6 +66,7 @@ try
     set encoding=UTF-8
 catch //
 endtry
+let $LANG='en_US.utf-8'
 set tabstop=8
 set softtabstop=4
 set shiftwidth=4
@@ -75,6 +76,7 @@ set sessionoptions+=unix,slash
 " set lazyredraw
 set undofile
 set noswapfile
+set clipboard+=unnamedplus
 
 let g:neovide_cursor_vfx_mode = "pixiedust"
 
