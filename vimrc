@@ -143,6 +143,12 @@ Plug 'kien/ctrlp.vim'
 
 Plug 'chrisbra/NrrwRgn'
 
+" Use release branch (recommended)
+" CocStart
+" CocInstall coc-python
+" for python: regenerate ~/.config/nvim/.venv
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 call plug#end()
 
 " emmet-vim
