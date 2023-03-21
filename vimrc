@@ -148,6 +148,7 @@ Plug 'chrisbra/NrrwRgn'
 " CocInstall coc-python
 " for python: regenerate ~/.config/nvim/.venv
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+let g:coc_disable_startup_warning = 1
 
 call plug#end()
 
