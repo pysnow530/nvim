@@ -143,6 +143,8 @@ Plug 'kien/ctrlp.vim'
 
 Plug 'chrisbra/NrrwRgn'
 
+Plug 'github/copilot.vim'
+
 call plug#end()
 
 " emmet-vim
