@@ -350,4 +350,9 @@ augroup filetype_j
     autocmd FileType j vnoremap <buffer> <localleader>r :w !jconsole<CR>
     autocmd FileType j nnoremap <buffer> <localleader>i :!jconsole<CR>
 augroup END
+
+augroup filetype_cs
+    autocmd!
+    autocmd FileType cs nnoremap <buffer> <localleader>r :!cd %:h && csc % && mono %:r.exe<CR>
+augroup END
 " }}}
