@@ -23,7 +23,7 @@ set history=50
 set showcmd
 set hlsearch
 set incsearch
-" set cursorline
+set cursorline
 set showmatch
 set scrolloff=1
 set nowrap
@@ -76,7 +76,7 @@ set sessionoptions+=unix,slash
 " set lazyredraw
 set undofile
 set noswapfile
-" set clipboard+=unnamedplus
+set clipboard+=unnamedplus
 
 let g:neovide_cursor_vfx_mode = "pixiedust"
 
@@ -134,7 +134,7 @@ nmap <C-CR> <Plug>(SendToTermLine)
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 
-" Plug 'lifepillar/vim-solarized8'
+Plug 'lifepillar/vim-solarized8'
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -154,7 +154,7 @@ set fillchars+=vert:\│
 set guioptions=egm
 
 " solarized8
-" colorscheme solarized8
+colorscheme solarized8
 " }}}
 
 " {{{ config.filetypes
