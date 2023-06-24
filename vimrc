@@ -134,7 +134,7 @@ nmap <C-CR> <Plug>(SendToTermLine)
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 
-" Plug 'lifepillar/vim-solarized8'
+Plug 'lifepillar/vim-solarized8'
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -154,7 +154,7 @@ set fillchars+=vert:\│
 set guioptions=egm
 
 " solarized8
-" colorscheme solarized8
+colorscheme solarized8
 " }}}
 
 " {{{ config.filetypes
