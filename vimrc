@@ -145,6 +145,9 @@ Plug 'chrisbra/NrrwRgn'
 
 Plug 'github/copilot.vim'
 
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+
 call plug#end()
 
 " emmet-vim
@@ -354,5 +357,15 @@ augroup END
 augroup filetype_cs
     autocmd!
     autocmd FileType cs nnoremap <buffer> <localleader>r :!cd %:h && csc % && mono %:r.exe<CR>
+augroup END
+
+augroup filetype_dart
+    autocmd!
+    autocmd FileType dart setlocal tabstop=2
+    autocmd FileType dart setlocal softtabstop=2
+    autocmd FileType dart setlocal shiftwidth=2
+    autocmd FileType dart nnoremap <buffer> <localleader>r :!flutter run -d macos<CR>
+    command! -nargs=1 FlutterDoc !open https://api.flutter.dev/flutter/search.html?q=<args>
+    autocmd FileType dart setlocal keywordprg=:FlutterDoc
 augroup END
 " }}}
