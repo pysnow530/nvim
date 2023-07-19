@@ -148,6 +148,8 @@ Plug 'github/copilot.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 
+Plug 'justinmk/vim-sneak'
+
 call plug#end()
 
 " emmet-vim
