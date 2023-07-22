@@ -359,6 +359,7 @@ augroup END
 augroup filetype_cs
     autocmd!
     autocmd FileType cs nnoremap <buffer> <localleader>r :!cd %:h && csc % && mono %:r.exe<CR>
+    autocmd FileType cs iabbrev <buffer> log Debug.Log
 augroup END
 
 augroup filetype_dart
