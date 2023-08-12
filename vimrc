@@ -91,7 +91,7 @@ else
     set grepprg=grep\ -n\ $*\ -r\ .\ --exclude\ '.*.swp'
 endif
 command! -nargs=+ NewGrep execute 'silent grep! <args>' | redraw! | copen 10
-nnoremap <leader>g :NewGrep <c-r><c-w>
+" nnoremap <leader>g :NewGrep <c-r><c-w>
 nnoremap <c-h> <c-w>h
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
@@ -143,7 +143,12 @@ Plug 'lifepillar/vim-solarized8'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-Plug 'kien/ctrlp.vim'
+if !has('nvim')
+    Plug 'kien/ctrlp.vim'
+else
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.2' }
+end
 
 Plug 'chrisbra/NrrwRgn'
 
@@ -376,3 +381,7 @@ augroup filetype_dart
     autocmd FileType dart setlocal keywordprg=:FlutterDoc
 augroup END
 " }}}
+
+if has('nvim')
+    lua require('init')
+endif
