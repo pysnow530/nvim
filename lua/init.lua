@@ -47,7 +47,12 @@ require("lazy").setup({
     "justinmk/vim-sneak",
 
     -- theme
-    "lifepillar/vim-solarized8",
+    {
+        "folke/tokyonight.nvim",
+        lazy = false,
+        priority = 1000,
+        opts = {},
+    },
     "vim-airline/vim-airline",
     "vim-airline/vim-airline-themes",
 
@@ -105,3 +110,5 @@ require("lazy").setup({
     -- languages: python
     "hynek/vim-python-pep8-indent",
 })
+
+vim.cmd[[colorscheme tokyonight]]
