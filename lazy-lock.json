@@ -6,6 +6,7 @@
   "neo-tree.nvim": { "branch": "main", "commit": "cac2e1bfa1ecd5bd0ce7ae29e12efb3ba5a7347d" },
   "nui.nvim": { "branch": "main", "commit": "9e3916e784660f55f47daa6f26053ad044db5d6a" },
   "nvim-autopairs": { "branch": "master", "commit": "ae5b41ce880a6d850055e262d6dfebd362bb276e" },
+  "nvim-treesitter": { "branch": "master", "commit": "800b2f388b0f880be8a2fcd29494f7459af30a21" },
   "nvim-web-devicons": { "branch": "master", "commit": "ab899311f8ae00a47eae8e0879506cead8eb1561" },
   "plenary.nvim": { "branch": "master", "commit": "267282a9ce242bbb0c5dc31445b6d353bed978bb" },
   "telescope.nvim": { "branch": "master", "commit": "776b509f80dd49d8205b9b0d94485568236d1192" },
