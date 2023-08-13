@@ -5,8 +5,7 @@
 " Inittime:     Apr 5, 2015
 "
 " neovim
-" git clone git@github.com:pysnow530/dotvim.git ~/.config/nvim && nvim +PlugInstall
-" remote develop with neovim: https://neovide.dev/features.html
+" mv -v ~/.config/nvim{,.bak} && git clone git@github.com:pysnow530/dotvim.git ~/.config/nvim
 "
 let mapleader = ","
 let maplocalleader = '\'
@@ -114,52 +113,43 @@ endif
 " {{{ plugins.global
 filetype off
 
-call plug#begin()
-Plug 'hynek/vim-python-pep8-indent'  " neovim also has indent problem
-Plug 'airblade/vim-gitgutter'
-Plug 'lvht/tagbar-markdown'
-Plug 'tpope/vim-fugitive', { 'tag': 'v3.7' }
-Plug 'cohama/lexima.vim'
-Plug 'vim-scripts/argtextobj.vim'
+lua require('init')
+" call plug#begin()
+" Plug 'hynek/vim-python-pep8-indent'  " neovim also has indent problem
+" Plug 'airblade/vim-gitgutter'
+" Plug 'lvht/tagbar-markdown'
+" Plug 'tpope/vim-fugitive', { 'tag': 'v3.7' }
+" Plug 'cohama/lexima.vim'
+" Plug 'vim-scripts/argtextobj.vim'
 
-" file management
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-let g:NERDTreeQuitOnOpen = 0
-nnoremap <leader>f :NERDTreeToggle<CR>
-let NERDTreeIgnore = ['\~$', '\.pyc$']
+" " file management
+" Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 
-Plug 'habamax/vim-sendtoterm'
-xmap <leader>r  <Plug>(SendToTerm)
-nmap <leader>r  <Plug>(SendToTerm)
-omap <leader>r  <Plug>(SendToTerm)
-nmap <leader>rr <Plug>(SendToTermLine)
-nmap <C-CR> <Plug>(SendToTermLine)
+" Plug 'tpope/vim-surround'
+" Plug 'tpope/vim-commentary'
 
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
+" Plug 'lifepillar/vim-solarized8'
 
-Plug 'lifepillar/vim-solarized8'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
 
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" if !has('nvim')
+"     Plug 'kien/ctrlp.vim'
+" else
+"     Plug 'nvim-lua/plenary.nvim'
+"     Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.2' }
+" end
 
-if !has('nvim')
-    Plug 'kien/ctrlp.vim'
-else
-    Plug 'nvim-lua/plenary.nvim'
-    Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.2' }
-end
+" Plug 'chrisbra/NrrwRgn'
 
-Plug 'chrisbra/NrrwRgn'
+" Plug 'github/copilot.vim'
 
-Plug 'github/copilot.vim'
+" Plug 'pangloss/vim-javascript'
+" Plug 'mxw/vim-jsx'
 
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
+" Plug 'justinmk/vim-sneak'
 
-Plug 'justinmk/vim-sneak'
-
-call plug#end()
+" call plug#end()
 
 " emmet-vim
 let g:user_emmet_leader_key = '<leader>e'
@@ -381,7 +371,3 @@ augroup filetype_dart
     autocmd FileType dart setlocal keywordprg=:FlutterDoc
 augroup END
 " }}}
-
-if has('nvim')
-    lua require('init')
-endif
