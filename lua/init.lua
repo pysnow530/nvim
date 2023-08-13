@@ -27,6 +27,7 @@ require("lazy").setup({
                     local gs = package.loaded.gitsigns
                     vim.keymap.set('n', ']c', gs.next_hunk, {})
                     vim.keymap.set('n', '[c', gs.prev_hunk, {})
+                    vim.keymap.set('n', '<leader>hu', gs.reset_hunk, {})
                 end
             }
         end,
