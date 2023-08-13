@@ -18,26 +18,68 @@ vim.opt.rtp:prepend(lazypath)
 -- 3. install and change term font
 
 require("lazy").setup({
-    "hynek/vim-python-pep8-indent",
-    "airblade/vim-gitgutter",
-    "lvht/tagbar-markdown",
+    -- version control
+    {
+        "lewis6991/gitsigns.nvim",
+        config = function()
+            require('gitsigns').setup{
+                on_attach = function(bufnr)
+                    local gs = package.loaded.gitsigns
+                    vim.keymap.set('n', ']c', gs.next_hunk, {})
+                    vim.keymap.set('n', '[c', gs.prev_hunk, {})
+                end
+            }
+        end,
+    },
     { "tpope/vim-fugitive", tag = "v3.7" },
-    "cohama/lexima.vim",
+    -- "airblade/vim-gitgutter",
+
+    -- editor
+    {
+        'windwp/nvim-autopairs',
+        event = "InsertEnter",
+        opts = {} -- this is equalent to setup({}) function
+    },
     "vim-scripts/argtextobj.vim",
-    "scrooloose/nerdtree",
     "tpope/vim-surround",
     "tpope/vim-commentary",
+    "justinmk/vim-sneak",
+
+    -- theme
     "lifepillar/vim-solarized8",
     "vim-airline/vim-airline",
     "vim-airline/vim-airline-themes",
+
+    -- finder
     "nvim-lua/plenary.nvim",
-    { "nvim-telescope/telescope.nvim", tag = "0.1.2" },
+    {
+        "nvim-telescope/telescope.nvim",
+        keys = {
+            { "<C-p>", "<cmd>Telescope find_files<cr>", desc = "Telescope_find_files" },
+            { "<leader>g", "<cmd>Telescope live_grep<cr>", desc = "Telescope_live_grep" }
+        },
+        tag = "0.1.2",
+    },
+    {
+        "nvim-neo-tree/neo-tree.nvim",
+        keys = {
+            { "<leader>n", "<cmd>Neotree toggle<cr>", desc = "NeoTree" }
+        },
+        branch = "v3.x",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+            "MunifTanjim/nui.nvim",
+        },
+    },
+
+    -- ai
     "github/copilot.vim",
+
+    -- languages: javascript
     "pangloss/vim-javascript",
     "mxw/vim-jsx",
-    "justinmk/vim-sneak",
-})
 
-local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<C-p>', builtin.find_files, {})
-vim.keymap.set('n', '<leader>g', builtin.live_grep, {})
+    -- languages: python
+    "hynek/vim-python-pep8-indent",
+})
