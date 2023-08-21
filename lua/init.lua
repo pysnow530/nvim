@@ -14,7 +14,7 @@ vim.opt.rtp:prepend(lazypath)
 
 -- install nerd font (optional)
 -- 1. https://www.nerdfonts.com/font-downloads
--- 2. SauceCodePro Nerd Font
+-- 2. SauceCodePro Nerd Font (NOTE: cannot search on web page)
 -- 3. install and change term font
 
 require("lazy").setup({
@@ -109,6 +109,18 @@ require("lazy").setup({
 
     -- languages: python
     "hynek/vim-python-pep8-indent",
+
+    {
+        'glacambre/firenvim',
+
+        -- Lazy load firenvim
+        -- Explanation: https://github.com/folke/lazy.nvim/discussions/463#discussioncomment-4819297
+        lazy = not vim.g.started_by_firenvim,
+        build = function()
+            vim.fn["firenvim#install"](0)
+        end
+    },
+
 })
 
 vim.cmd[[colorscheme tokyonight]]
