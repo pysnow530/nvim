@@ -5,7 +5,8 @@
 " Inittime:     Apr 5, 2015
 "
 " neovim
-" mv -v ~/.config/nvim{,.bak} && git clone git@github.com:pysnow530/dotvim.git ~/.config/nvim
+" git clone git@github.com:pysnow530/dotvim.git ~/.config/nvim && nvim +PlugInstall
+" remote develop with neovim: https://neovide.dev/features.html
 "
 let mapleader = ","
 let maplocalleader = '\'
@@ -90,7 +91,7 @@ else
     set grepprg=grep\ -n\ $*\ -r\ .\ --exclude\ '.*.swp'
 endif
 command! -nargs=+ NewGrep execute 'silent grep! <args>' | redraw! | copen 10
-" nnoremap <leader>g :NewGrep <c-r><c-w>
+nnoremap <leader>g :NewGrep <c-r><c-w>
 nnoremap <c-h> <c-w>h
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
@@ -113,49 +114,56 @@ endif
 " {{{ plugins.global
 filetype off
 
-lua require('init')
-" call plug#begin()
-" Plug 'hynek/vim-python-pep8-indent'  " neovim also has indent problem
-" Plug 'airblade/vim-gitgutter'
-" Plug 'lvht/tagbar-markdown'
-" Plug 'tpope/vim-fugitive', { 'tag': 'v3.7' }
-" Plug 'cohama/lexima.vim'
-" Plug 'vim-scripts/argtextobj.vim'
+call plug#begin()
+Plug 'hynek/vim-python-pep8-indent'  " neovim also has indent problem
+Plug 'airblade/vim-gitgutter'
+Plug 'lvht/tagbar-markdown'
+Plug 'tpope/vim-fugitive', { 'tag': 'v3.7' }
+Plug 'cohama/lexima.vim'
+Plug 'vim-scripts/argtextobj.vim'
 
-" " file management
-" Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+" file management
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+let g:NERDTreeQuitOnOpen = 0
+nnoremap <leader>f :NERDTreeToggle<CR>
+let NERDTreeIgnore = ['\~$', '\.pyc$']
 
-" Plug 'tpope/vim-surround'
-" Plug 'tpope/vim-commentary'
+Plug 'habamax/vim-sendtoterm'
+xmap <leader>r  <Plug>(SendToTerm)
+nmap <leader>r  <Plug>(SendToTerm)
+omap <leader>r  <Plug>(SendToTerm)
+nmap <leader>rr <Plug>(SendToTermLine)
+nmap <C-CR> <Plug>(SendToTermLine)
 
-" Plug 'lifepillar/vim-solarized8'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
 
-" Plug 'vim-airline/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'
+Plug 'lifepillar/vim-solarized8'
 
-" if !has('nvim')
-"     Plug 'kien/ctrlp.vim'
-" else
-"     Plug 'nvim-lua/plenary.nvim'
-"     Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.2' }
-" end
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
-" Plug 'chrisbra/NrrwRgn'
+Plug 'kien/ctrlp.vim'
 
-" Plug 'github/copilot.vim'
+Plug 'chrisbra/NrrwRgn'
 
-" Plug 'pangloss/vim-javascript'
-" Plug 'mxw/vim-jsx'
+Plug 'github/copilot.vim'
 
-" Plug 'justinmk/vim-sneak'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
 
-" call plug#end()
+Plug 'justinmk/vim-sneak'
+
+call plug#end()
 
 " emmet-vim
 let g:user_emmet_leader_key = '<leader>e'
 
 set fillchars+=vert:\│
 set guioptions=egm
+
+" solarized8
+colorscheme solarized8
 " }}}
 
 " {{{ config.filetypes
