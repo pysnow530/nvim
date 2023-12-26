@@ -369,7 +369,7 @@ augroup filetype_dart
     autocmd FileType dart setlocal tabstop=2
     autocmd FileType dart setlocal softtabstop=2
     autocmd FileType dart setlocal shiftwidth=2
-    autocmd FileType dart nnoremap <buffer> <localleader>r :!flutter run -d macos<CR>
+    autocmd FileType dart nnoremap <buffer> <localleader>r :!dart %<CR>
     command! -nargs=1 FlutterDoc !open https://api.flutter.dev/flutter/search.html?q=<args>
     autocmd FileType dart setlocal keywordprg=:FlutterDoc
 augroup END
