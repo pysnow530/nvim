@@ -76,7 +76,9 @@ set sessionoptions+=unix,slash
 " set lazyredraw
 set undofile
 set noswapfile
-" set clipboard+=unnamedplus
+set clipboard+=unnamedplus
+inoremap <D-v> <esc>"+pi
+nnoremap <D-c> "+y
 
 let g:neovide_cursor_vfx_mode = "pixiedust"
 
