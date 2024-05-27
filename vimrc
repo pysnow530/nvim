@@ -77,7 +77,7 @@ set sessionoptions+=unix,slash
 set undofile
 set noswapfile
 set clipboard+=unnamedplus
-inoremap <D-v> <esc>"+pi
+inoremap <D-v> <esc>"+pa
 nnoremap <D-c> "+y
 
 let g:neovide_cursor_vfx_mode = "pixiedust"
