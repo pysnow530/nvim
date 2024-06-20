@@ -85,11 +85,8 @@ set mouse=a
 inoremap jk <ESC>
 inoremap <c-u> <esc>vbUea
 nnoremap <leader>b :b#<CR>
-if isdirectory('.git') || isdirectory('../.git') || isdirectory('../../.git')
-    set grepprg=git\ grep\ -n\ $*
-else
-    set grepprg=grep\ -n\ $*\ -r\ .\ --exclude\ '.*.swp'
-endif
+" neovim defaults to use `rg --vimgrep -uu `, ref :help grepprg
+set grepprg=rg\ --vimgrep\ $*\ ~/projs/vsops\ ~/projs/vsops2-fe-cost\ ~/projs/api
 command! -nargs=+ NewGrep execute 'silent grep! <args>' | redraw! | copen 10
 nnoremap <leader>g :NewGrep <c-r><c-w>
 nnoremap <c-h> <c-w>h
