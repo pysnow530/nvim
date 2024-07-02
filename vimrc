@@ -149,6 +149,8 @@ Plug 'mxw/vim-jsx'
 
 Plug 'justinmk/vim-sneak'
 
+Plug 'nvie/vim-flake8'
+
 call plug#end()
 
 " emmet-vim
@@ -225,6 +227,7 @@ augroup filetype_python
     autocmd FileType python vnoremap <buffer> <localleader>r :w !python3 >/tmp/vim-python.out && cat /tmp/vim-python.out<CR>
     autocmd FileType python nnoremap <buffer> <localleader>i :!python3<CR>
     autocmd FileType python iabbrev <buffer> ifmain if __name__ == '__main__'
+    autocmd FileType python nnoremap <buffer> <localleader>c :call flake8#Flake8()<CR>
 augroup END
 
 augroup filetype_ruby
