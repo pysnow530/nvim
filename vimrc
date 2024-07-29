@@ -151,6 +151,8 @@ Plug 'justinmk/vim-sneak'
 
 Plug 'nvie/vim-flake8'
 
+Plug 'joukevandermaas/vim-ember-hbs'
+
 call plug#end()
 
 " emmet-vim
