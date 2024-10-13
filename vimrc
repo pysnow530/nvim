@@ -212,9 +212,9 @@ augroup END
 
 augroup filetype_javascript
     autocmd!
-    autocmd FileType javascript setlocal tabstop=2
-    autocmd FileType javascript setlocal softtabstop=2
-    autocmd FileType javascript setlocal shiftwidth=2
+    autocmd FileType javascript setlocal tabstop=4
+    autocmd FileType javascript setlocal softtabstop=4
+    autocmd FileType javascript setlocal shiftwidth=4
     autocmd FileType javascript nnoremap <buffer> <localleader>r :!node %<CR>
     autocmd FileType javascript vnoremap <buffer> <localleader>r :w !node<CR>
     autocmd FileType javascript nnoremap <buffer> <localleader>i :!node<CR>
