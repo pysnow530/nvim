@@ -9,8 +9,6 @@ return {
     { 'tpope/vim-surround' },
     { 'tpope/vim-commentary' },
     { 'lifepillar/vim-solarized8' },
-    { 'vim-airline/vim-airline' },
-    { 'vim-airline/vim-airline-themes' },
     { 'kien/ctrlp.vim' },
     { 'chrisbra/NrrwRgn' },
     { 'pangloss/vim-javascript' },

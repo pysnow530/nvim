@@ -116,9 +116,6 @@ nmap <C-CR> <Plug>(SendToTermLine)
 
 " Plug 'lifepillar/vim-solarized8'
 
-" Plug 'vim-airline/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'
-
 " Plug 'kien/ctrlp.vim'
 
 " Plug 'chrisbra/NrrwRgn'
