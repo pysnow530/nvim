@@ -8,6 +8,7 @@
 " git clone git@github.com:pysnow530/dotvim.git ~/.config/nvim && nvim +PlugInstall
 " remote develop with neovim: https://neovide.dev/features.html
 "
+echom 'in vimrc'
 let mapleader = ","
 let maplocalleader = '\'
 " }}}
