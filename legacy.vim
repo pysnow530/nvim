@@ -113,7 +113,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'lvht/tagbar-markdown'
 
 Plug 'tpope/vim-fugitive', { 'tag': 'v3.7' }
-nnoremap <leader>v :Git<CR>
+" nnoremap <leader>v :Git<CR>
 
 Plug 'cohama/lexima.vim'
 Plug 'vim-scripts/argtextobj.vim'
