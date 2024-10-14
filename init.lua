@@ -24,6 +24,6 @@ vim.api.nvim_set_keymap('n', '<leader>v', ':Git<CR>', { desc = 'Open git version
 -- reload after save
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
     pattern = { "init.lua" },
-    callback = function(ev) vim.cmd('luafile %') end,
+    callback = function(_) vim.cmd('luafile %') end,
     group = vim.api.nvim_create_augroup('AutoReloadConfigGroup', {})
 })
