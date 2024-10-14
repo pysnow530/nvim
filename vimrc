@@ -115,7 +115,10 @@ call plug#begin()
 Plug 'hynek/vim-python-pep8-indent'  " neovim also has indent problem
 Plug 'airblade/vim-gitgutter'
 Plug 'lvht/tagbar-markdown'
+
 Plug 'tpope/vim-fugitive', { 'tag': 'v3.7' }
+nnoremap <leader>v :Git<CR>
+
 Plug 'cohama/lexima.vim'
 Plug 'vim-scripts/argtextobj.vim'
 
