@@ -1,5 +1,4 @@
 return {
-    { 'hynek/vim-python-pep8-indent' },
     { 'airblade/vim-gitgutter' },
     { 'lvht/tagbar-markdown' },
     { 'tpope/vim-fugitive', tag = 'v3.7' },
