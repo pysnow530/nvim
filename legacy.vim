@@ -1,17 +1,3 @@
-" {{{ description
-" pysnow530's neovim configuration.
-"
-" Maintainer:   pysnow530 <pysnow530@163.com>
-" Inittime:     Apr 5, 2015
-"
-" neovim
-" git clone git@github.com:pysnow530/dotvim.git ~/.config/nvim && nvim +PlugInstall
-" remote develop with neovim: https://neovide.dev/features.html
-"
-let mapleader = ","
-let maplocalleader = '\'
-" }}}
-
 " {{{ config.environ
 " let $PATH = '/usr/local/bin:/bin:/usr/bin:/usr/local/bin:/opt/local/bin'
 " }}}
@@ -107,52 +93,52 @@ nnoremap <leader>j :w<CR>
 " {{{ plugins.global
 filetype off
 
-call plug#begin()
-Plug 'hynek/vim-python-pep8-indent'  " neovim also has indent problem
-Plug 'airblade/vim-gitgutter'
-Plug 'lvht/tagbar-markdown'
+" call plug#begin()
+" Plug 'hynek/vim-python-pep8-indent'  " neovim also has indent problem
+" Plug 'airblade/vim-gitgutter'
+" Plug 'lvht/tagbar-markdown'
 
-Plug 'tpope/vim-fugitive', { 'tag': 'v3.7' }
+" Plug 'tpope/vim-fugitive', { 'tag': 'v3.7' }
 " nnoremap <leader>v :Git<CR>
 
-Plug 'cohama/lexima.vim'
-Plug 'vim-scripts/argtextobj.vim'
+" Plug 'cohama/lexima.vim'
+" Plug 'vim-scripts/argtextobj.vim'
 
 " file management
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+" Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 let g:NERDTreeQuitOnOpen = 0
 nnoremap <leader>f :NERDTreeToggle<CR>
 let NERDTreeIgnore = ['\~$', '\.pyc$']
 
-Plug 'habamax/vim-sendtoterm'
+" Plug 'habamax/vim-sendtoterm'
 xmap <leader>r  <Plug>(SendToTerm)
 nmap <leader>r  <Plug>(SendToTerm)
 omap <leader>r  <Plug>(SendToTerm)
 nmap <leader>rr <Plug>(SendToTermLine)
 nmap <C-CR> <Plug>(SendToTermLine)
 
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
+" Plug 'tpope/vim-surround'
+" Plug 'tpope/vim-commentary'
 
-Plug 'lifepillar/vim-solarized8'
+" Plug 'lifepillar/vim-solarized8'
 
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
 
-Plug 'kien/ctrlp.vim'
+" Plug 'kien/ctrlp.vim'
 
-Plug 'chrisbra/NrrwRgn'
+" Plug 'chrisbra/NrrwRgn'
 
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
+" Plug 'pangloss/vim-javascript'
+" Plug 'mxw/vim-jsx'
 
-Plug 'justinmk/vim-sneak'
+" Plug 'justinmk/vim-sneak'
 
-Plug 'nvie/vim-flake8'
+" Plug 'nvie/vim-flake8'
 
-Plug 'joukevandermaas/vim-ember-hbs'
+" Plug 'joukevandermaas/vim-ember-hbs'
 
-call plug#end()
+" call plug#end()
 
 " emmet-vim
 let g:user_emmet_leader_key = '<leader>e'

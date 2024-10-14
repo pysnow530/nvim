@@ -1,3 +1,16 @@
+-- pysnow530's neovim configuration.
+--
+-- Maintainer:   pysnow530 <pysnow530@163.com>
+-- Inittime:     Apr 5, 2015
+--
+-- neovim
+-- git clone git@github.com:pysnow530/dotvim.git ~/.config/nvim && nvim +PlugInstall
+-- remote develop with neovim: https://neovide.dev/features.html
+--
+-- let mapleader = ","
+-- let maplocalleader = '\'
+require('config.lazy')
+
 local config_dir = vim.fn.stdpath('config')
 local init_lua_path = config_dir .. '/init.lua'
 
