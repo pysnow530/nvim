@@ -5,7 +5,6 @@ return {
     { 'tpope/vim-fugitive', tag = 'v3.7' },
     { 'cohama/lexima.vim' },
     { 'vim-scripts/argtextobj.vim' },
-    { 'scrooloose/nerdtree' },
     { 'habamax/vim-sendtoterm' },
     { 'tpope/vim-surround' },
     { 'tpope/vim-commentary' },

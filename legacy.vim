@@ -104,12 +104,6 @@ filetype off
 " Plug 'cohama/lexima.vim'
 " Plug 'vim-scripts/argtextobj.vim'
 
-" file management
-" Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-let g:NERDTreeQuitOnOpen = 0
-nnoremap <leader>f :NERDTreeToggle<CR>
-let NERDTreeIgnore = ['\~$', '\.pyc$']
-
 " Plug 'habamax/vim-sendtoterm'
 xmap <leader>r  <Plug>(SendToTerm)
 nmap <leader>r  <Plug>(SendToTerm)
