@@ -101,11 +101,7 @@ nnoremap <leader><leader> q:
 nnoremap <leader>k :q<CR>
 nnoremap <leader>j :w<CR>
 
-if has('nvim')
-    nnoremap <leader>s :e ~/.config/nvim/vimrc<CR>
-else
-    nnoremap <leader>s :e ~/.vim/vimrc<CR>
-endif
+" nnoremap <leader>s :e ~/.config/nvim/vimrc<CR> " refactor to init.lua
 " }}}
 
 " {{{ plugins.global
