@@ -137,10 +137,6 @@ let g:user_emmet_leader_key = '<leader>e'
 set fillchars+=vert:\│
 set guioptions=egm
 
-" solarized8
-colorscheme solarized8
-" }}}
-
 " {{{ config.filetypes
 filetype plugin indent on
 
