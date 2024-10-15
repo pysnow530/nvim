@@ -1,6 +1,7 @@
 return {
     {
         "neovim/nvim-lspconfig",
+        commit = '7c4d0f77b8323ff679010706292e5caa4a13d8e6',
         config = function()
             -- :help lspconfig-all
             require'lspconfig'.pyright.setup{}
