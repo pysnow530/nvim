@@ -9,7 +9,6 @@ return {
     { 'tpope/vim-commentary' },
     { 'lifepillar/vim-solarized8' },
     { 'kien/ctrlp.vim' },
-    { 'chrisbra/NrrwRgn' },
     { 'pangloss/vim-javascript' },
     { 'mxw/vim-jsx' },
     { 'justinmk/vim-sneak' },
