@@ -5,21 +5,21 @@ vim.api.nvim_set_keymap('n', '<leader>g', '', {
     callback =
         function()
             -- current path
-            local curr_path = vim.fn.expand('%:p')
-            if curr_path == nil or curr_path == "" then
-                error(string.format('Expand current path error: %q', curr_path))
+            local curr_buf_path = vim.fn.expand('%:p')
+            if curr_buf_path == nil or curr_buf_path == "" then
+                error(string.format('Expand current path error: %q', curr_buf_path))
             end
 
             -- git root directory
             local util = require('lspconfig.util')
-            local root = util.find_git_ancestor(curr_path)
-            if root == nil then
-                error(string.format('Find git ancestor error: %q', curr_path))
+            local root_dir = util.find_git_ancestor(curr_buf_path)
+            if root_dir == nil then
+                error(string.format('Find git ancestor error: %q', curr_buf_path))
             end
 
             local search = vim.fn.input('rg search: ', vim.fn.expand('<cword>'))
             if search ~= "" then
-                vim.cmd(string.format(':RipGrep %q %q', search, root))
+                vim.cmd(string.format(':RipGrep %q %q', search, root_dir))
             end
         end
     ,
@@ -40,7 +40,24 @@ return {
     {
         'scrooloose/nerdtree',
         keys = {
-            { '<leader>f', ':NERDTreeToggle<CR>', desc = 'Toggle file tree' }
+            {
+                '<leader>f',
+                function()
+                    -- current path
+                    local util = require('lspconfig.util')
+                    local curr_buf_path = vim.fn.expand('%:p')
+                    local root_dir = util.find_git_ancestor(curr_buf_path)
+
+                    -- git root directory
+                    if root_dir == nil then
+                        vim.cmd('NERDTreeToggle')
+                    else
+                        vim.cmd('NERDTreeToggle ' .. root_dir)
+                    end
+                end
+                ,
+                desc = 'Toggle file tree'
+            }
         },
         init = function()
             vim.g.NERDTreeQuitOnOpen = 0
