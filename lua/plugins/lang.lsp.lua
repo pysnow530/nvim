@@ -121,7 +121,7 @@ return {
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
             -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
 
-            local servers = {'pyright', 'ts_ls'}
+            local servers = {'pyright', 'lua_ls', 'ts_ls'}
             for _, lsp in ipairs(servers) do
                 require('lspconfig')[lsp].setup {
                     capabilities = capabilities

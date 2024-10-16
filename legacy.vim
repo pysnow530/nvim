@@ -71,10 +71,6 @@ set mouse=a
 inoremap jk <ESC>
 inoremap <c-u> <esc>vbUea
 nnoremap <leader>b :b#<CR>
-" neovim defaults to use `rg --vimgrep -uu `, ref :help grepprg
-set grepprg=rg\ --vimgrep\ $*\ ~/projs/vsops\ ~/projs/vsops2-fe-cost\ ~/projs/api
-command! -nargs=+ NewGrep execute 'silent grep! <args>' | redraw! | copen 10
-nnoremap <leader>g :NewGrep <c-r><c-w>
 nnoremap <c-h> <c-w>h
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
