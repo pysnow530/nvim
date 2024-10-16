@@ -1,49 +1,8 @@
 return {
     {
-        "neovim/nvim-lspconfig",
-        commit = '7c4d0f77b8323ff679010706292e5caa4a13d8e6',
-        config = function()
-            -- :help lspconfig-all
-            require'lspconfig'.pyright.setup{}
-            require'lspconfig'.lua_ls.setup {
-                on_init = function(client)
-                    if client.workspace_folders then
-                        local path = client.workspace_folders[1].name
-                        if vim.uv.fs_stat(path..'/.luarc.json') or vim.uv.fs_stat(path..'/.luarc.jsonc') then
-                            return
-                        end
-                    end
-
-                    client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-                        runtime = {
-                            -- Tell the language server which version of Lua you're using
-                            -- (most likely LuaJIT in the case of Neovim)
-                            version = 'LuaJIT'
-                        },
-                        -- Make the server aware of Neovim runtime files
-                        workspace = {
-                            checkThirdParty = false,
-                            library = {
-                                vim.env.VIMRUNTIME
-                                -- Depending on the usage, you might want to add additional paths here.
-                                -- "${3rd}/luv/library"
-                                -- "${3rd}/busted/library",
-                            }
-                            -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
-                            -- library = vim.api.nvim_get_runtime_file("", true)
-                        }
-                    })
-                end,
-                settings = {
-                    Lua = {}
-                }
-            }
-            require'lspconfig'.ts_ls.setup{}
-        end
-    },
-    {
         'hrsh7th/nvim-cmp',
         dependencies = {
+            { "neovim/nvim-lspconfig", commit = '7c4d0f77b8323ff679010706292e5caa4a13d8e6' },
             'hrsh7th/cmp-nvim-lsp',
             'hrsh7th/cmp-buffer',
             'hrsh7th/cmp-path',
@@ -119,14 +78,52 @@ return {
 
             -- Set up lspconfig.
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
-            -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
 
-            local servers = {'pyright', 'lua_ls', 'ts_ls'}
-            for _, lsp in ipairs(servers) do
-                require('lspconfig')[lsp].setup {
-                    capabilities = capabilities
+            require'lspconfig'.pyright.setup{
+                capabilities = capabilities,
+            }
+            require'lspconfig'.lua_ls.setup {
+                capabilities = capabilities,
+                on_init = function(client)
+                    if client.workspace_folders then
+                        local path = client.workspace_folders[1].name
+                        if vim.uv.fs_stat(path..'/.luarc.json') or vim.uv.fs_stat(path..'/.luarc.jsonc') then
+                            return
+                        end
+                    end
+
+                    client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+                        runtime = {
+                            -- Tell the language server which version of Lua you're using
+                            -- (most likely LuaJIT in the case of Neovim)
+                            version = 'LuaJIT'
+                        },
+                        -- Make the server aware of Neovim runtime files
+                        workspace = {
+                            checkThirdParty = false,
+                            library = {
+                                vim.env.VIMRUNTIME,
+                                vim.fn.stdpath('data') .. '/lazy',
+                                -- Depending on the usage, you might want to add additional paths here.
+                                -- "${3rd}/luv/library"
+                                -- "${3rd}/busted/library",
+                            }
+                            -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
+                            -- library = vim.api.nvim_get_runtime_file("", true)
+                        }
+                    })
+                end,
+                settings = {
+                    Lua = {}
                 }
-            end
+            }
+            require'lspconfig'.ts_ls.setup{
+                capabilities = capabilities,
+            }
+            require'lspconfig'.gopls.setup{
+                capabilities = capabilities,
+                cmd = { vim.env.HOME .. '/go/bin/gopls' }
+            }
         end
     },
 }
