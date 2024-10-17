@@ -68,6 +68,10 @@ vim.api.nvim_set_keymap('n', '<leader><leader>g', '', {
 
 vim.api.nvim_set_keymap('n', '<leader>v', ':Git<CR>', { desc = 'Open git version control system' })
 
+local function starts_with(self, substring)
+    return self:sub(1, #substring) == substring
+end
+
 return {
     { 'airblade/vim-gitgutter' },
     { 'tpope/vim-fugitive', tag = 'v3.7' },
@@ -93,6 +97,9 @@ return {
                         vim.cmd('NERDTreeToggle')
                     else
                         vim.cmd('NERDTreeToggle ' .. root_dir)
+                        if starts_with(vim.fn.bufname(), 'NERD_tree_tab_') then
+                            vim.cmd('NERDTreeFind ' .. curr_buf_path)
+                        end
                     end
                 end
                 ,
