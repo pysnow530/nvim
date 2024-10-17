@@ -1,3 +1,27 @@
+-- 编辑器基础配置
+vim.cmd('syntax on')
+vim.opt.history = 50
+vim.opt.showcmd = true
+vim.opt.hlsearch = true
+vim.opt.incsearch = true
+vim.opt.cursorline = true
+vim.opt.showmatch = true
+vim.opt.scrolloff = 1
+vim.opt.wrap = false
+vim.opt.foldtext = 'getline(v:foldstart)'
+vim.opt.foldlevel = 99  -- don't fold on opened
+vim.opt.background = 'dark'
+vim.opt.laststatus = 2
+if vim.fn.exists('+colorcolumn') then
+    vim.opt.colorcolumn = '100'
+end
+
+-- 行号和相对行号
+vim.opt.number = true
+if vim.fn.exists('+rnu') then
+    vim.opt.relativenumber = true
+end
+
 -- ripgrep
 local function find_git_root_dir()
     -- current path

@@ -1,32 +1,4 @@
-" {{{ config.environ
-" let $PATH = '/usr/local/bin:/bin:/usr/bin:/usr/local/bin:/opt/local/bin'
-" }}}
-
 " {{{ config.ui
-" https://github.com/ryanoasis/vim-devicons/issues/398
-syntax on
-set history=50
-set showcmd
-set hlsearch
-set incsearch
-set cursorline
-set showmatch
-set scrolloff=1
-set nowrap
-set foldtext=getline(v:foldstart)
-set foldlevel=99  " don't fold on opened
-
-set termguicolors
-" set guifont=SauceCodeProNerdFontCompleteM-Regular:h11,SauceCodeProNerdFontComplete-Regular:h11,*
-set background=dark
-
-" set cursorline
-if exists('+colorcolumn') | set colorcolumn=100 | endif
-set nu
-if exists('+rnu') | set rnu | endif
-
-set laststatus=2
-
 fun! ToggleAllFolds() abort
     let closed = 0
     for ln in range(1, line('$'))
@@ -82,53 +54,10 @@ tnoremap <c-l> <c-\><c-n><c-w>l
 nnoremap <leader><leader> q:
 nnoremap <leader>k :q<CR>
 nnoremap <leader>j :w<CR>
-
-" nnoremap <leader>s :e ~/.config/nvim/vimrc<CR> " refactor to init.lua
 " }}}
 
 " {{{ plugins.global
 filetype off
-
-" call plug#begin()
-" Plug 'hynek/vim-python-pep8-indent'  " neovim also has indent problem
-" Plug 'airblade/vim-gitgutter'
-" Plug 'lvht/tagbar-markdown'
-
-" Plug 'tpope/vim-fugitive', { 'tag': 'v3.7' }
-" nnoremap <leader>v :Git<CR>
-
-" Plug 'cohama/lexima.vim'
-" Plug 'vim-scripts/argtextobj.vim'
-
-" Plug 'habamax/vim-sendtoterm'
-xmap <leader>r  <Plug>(SendToTerm)
-nmap <leader>r  <Plug>(SendToTerm)
-omap <leader>r  <Plug>(SendToTerm)
-nmap <leader>rr <Plug>(SendToTermLine)
-nmap <C-CR> <Plug>(SendToTermLine)
-
-" Plug 'tpope/vim-surround'
-" Plug 'tpope/vim-commentary'
-
-" Plug 'lifepillar/vim-solarized8'
-
-" Plug 'kien/ctrlp.vim'
-
-" Plug 'chrisbra/NrrwRgn'
-
-" Plug 'pangloss/vim-javascript'
-" Plug 'mxw/vim-jsx'
-
-" Plug 'justinmk/vim-sneak'
-
-" Plug 'nvie/vim-flake8'
-
-" Plug 'joukevandermaas/vim-ember-hbs'
-
-" call plug#end()
-
-" emmet-vim
-let g:user_emmet_leader_key = '<leader>e'
 
 set fillchars+=vert:\│
 set guioptions=egm
