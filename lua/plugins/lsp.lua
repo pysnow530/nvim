@@ -8,6 +8,7 @@ return {
             'hrsh7th/cmp-path',
             'hrsh7th/cmp-cmdline',
             'hrsh7th/cmp-vsnip',
+            'hrsh7th/vim-vsnip',
         },
         config = function()
             -- Set up nvim-cmp.
