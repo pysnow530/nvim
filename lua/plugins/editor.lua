@@ -12,6 +12,10 @@ vim.opt.foldtext = 'getline(v:foldstart)'
 vim.opt.foldlevel = 99  -- don't fold on opened
 vim.opt.background = 'dark'
 vim.opt.laststatus = 2
+
+vim.api.nvim_set_keymap('i', 'jk', '<ESC>', { desc = 'jk for exit insert mode quickly' })
+vim.api.nvim_set_keymap('i', '<c-u>', '<ESC>vbUea', { desc = 'jk for exit insert mode quickly' })
+
 if vim.fn.exists('+colorcolumn') then
     vim.opt.colorcolumn = '100'
 end
