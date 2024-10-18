@@ -4,7 +4,7 @@ vim.api.nvim_set_keymap('n', '<c-k>', '<c-w>k', { desc='up window' })
 vim.api.nvim_set_keymap('n', '<c-l>', '<c-w>l', { desc='right window' })
 
 vim.api.nvim_set_keymap('n', '<leader>b', ':b#<CR>', { desc='go to prev buffer' })
-vim.api.nvim_set_keymap('n', '<leader><leader>', 'q:<CR>', { desc='open the command-line window' })
+vim.api.nvim_set_keymap('n', '<leader><leader>', 'q:', { desc='open the command-line window' })
 vim.api.nvim_set_keymap('n', '<leader>j', ':w<CR>', { desc='write buffer to file' })
 vim.api.nvim_set_keymap('n', '<leader>k', ':q<CR>', { desc='quit the current window' })
 
