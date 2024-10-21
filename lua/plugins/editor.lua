@@ -111,7 +111,27 @@ return {
     { 'cohama/lexima.vim' },
     { 'vim-scripts/argtextobj.vim' },
     { 'tpope/vim-surround' },
-    { 'kien/ctrlp.vim' },
+    {
+        'kien/ctrlp.vim',
+        init = function()
+            vim.g.ctrlp_map = ''
+        end,
+        keys = {
+            {
+                '<C-p>',
+                function()
+                    local project_root = find_project_root_dir()
+                    if project_root == nil then
+                        vim.cmd('CtrlP')
+                    else
+                        local cmd = 'CtrlP ' .. project_root
+                        vim.cmd(cmd)
+                    end
+                end,
+                desc = 'Ctrl p for searching file'
+            }
+        }
+    },
     { 'justinmk/vim-sneak' },
     { 'tpope/vim-commentary' },
     {
@@ -133,8 +153,7 @@ return {
                             vim.cmd('NERDTreeFind ' .. curr_buf_path)
                         end
                     end
-                end
-                ,
+                end,
                 desc = 'Toggle file tree'
             }
         },
