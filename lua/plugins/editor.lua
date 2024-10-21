@@ -30,7 +30,7 @@ local function find_project_root_dir()
     -- current path
     local curr_buf_path = vim.fn.expand('%:p')
     if curr_buf_path == nil or curr_buf_path == "" then
-        error(string.format('Expand current path error: %q', curr_buf_path))
+        return
     end
 
     local util = require('lspconfig.util')
